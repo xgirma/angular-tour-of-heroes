@@ -7,7 +7,9 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "e2e-update-webdriver": "npx webdriver-manager update --gecko=false",
+    "e2e-travis": "npx protractor --capabilities.chromeOptions.args=--headless e2e/protractor.conf.js"
   },
   "private": true,
   "dependencies": {

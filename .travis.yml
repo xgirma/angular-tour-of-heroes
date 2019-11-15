@@ -1,0 +1,16 @@
+language: node_js
+node_js:
+  - "10.16.3"
+addons:
+  chrome: stable
+branches:
+  only:
+    - master
+before_script:
+  - npm install -g @angular/cli
+script:
+  - ng lint
+  - ng test
+  - npm test -- --watch false --browsers ChromeHeadless
+  - npm run e2e-update-webdriver
+  - npm run e2e-travis

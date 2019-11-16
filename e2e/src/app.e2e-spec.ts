@@ -1,11 +1,12 @@
 import { AppPage } from './app.po';
 import { browser, logging } from 'protractor';
 
-describe('workspace-project App', () => {
+describe('App', () => {
   let page: AppPage;
 
   beforeEach(() => {
     page = new AppPage();
+    page.navigateTo();
   });
 
   afterEach(async () => {
@@ -14,5 +15,9 @@ describe('workspace-project App', () => {
     expect(logs).not.toContain(jasmine.objectContaining({
       level: logging.Level.SEVERE,
     } as logging.Entry));
+  });
+
+  it('should have title', () => {
+    expect(page.getTitleText()).toEqual('Tour of Heroes');
   });
 });

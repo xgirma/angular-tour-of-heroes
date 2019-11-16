@@ -45,11 +45,10 @@ describe('HeroesComponent', () => {
       .toEqual(`id: ${hero.id}`);
   });
 
-  it(`should have text '${hero.name}' in the input`, () => {
-    return fixture.whenStable().then(() => {
-      const inputBox = fixture.debugElement.query(By.css('input')).nativeElement;
-      expect(inputBox.value).toEqual(hero.name);
-    });
+  it(`should have text '${hero.name}' in the input`, async () => {
+    await fixture.whenStable();
+    const inputBox = fixture.debugElement.query(By.css('input')).nativeElement;
+    expect(inputBox.value).toEqual(hero.name);
   });
 });
 
@@ -75,14 +74,11 @@ describe('HeroesComponent: input', () => {
     component.hero = hero;
   });
 
-  it('input should accept new value', () => {
-    return fixture.whenStable().then(() => {
-      const inputBox = fixture.debugElement.query(By.css('input')).nativeElement;
-
-      inputBox.value = 'Foo';
-      inputBox.dispatchEvent(new Event('input'));
-
-      expect(inputBox.value).toBe('Foo');
-    });
+  it('input should accept new value', async () => {
+    await fixture.whenStable();
+    const inputBox = fixture.debugElement.query(By.css('input')).nativeElement;
+    inputBox.value = 'Foo';
+    inputBox.dispatchEvent(new Event('input'));
+    expect(inputBox.value).toBe('Foo');
   });
 });

@@ -1,1 +1,7 @@
-<p>heroes works!</p>
+<h2 id="dtl">{{hero.name | uppercase}} Details</h2>
+<div id="hro-id"><span>id: </span>{{hero.id}}</div>
+<div id="hro-name">
+  <label>name:
+    <input [(ngModel)]="hero.name" placeholder="name" name="name"/>
+  </label>
+</div>

@@ -10,7 +10,7 @@ before_script:
   - npm install -g @angular/cli
 script:
   - ng lint
-  - npm run start
+  - npm run start &
   - npm test -- --watch false --browsers ChromeHeadless
   - npm run e2e-update-webdriver
   - npm run e2e-travis

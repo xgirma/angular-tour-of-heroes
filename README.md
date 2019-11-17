@@ -469,3 +469,66 @@ describe('AppComponent', () => {
   > application feature. Therfore, a test failour does not always correlate with application failour.
 
 Now all tests are passing. Let us add additional unit- and e2e-tests for the `HeroesComponent`. 
+
+At this point we will cleanup the existing `AppComponent` test, to reduce repetion and also add one more test for the addition of the child component (`HeroesComponent`).
+
+Compare the above snippet with the below.
+
+```typescript
+import {TestBed, async, ComponentFixture} from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { AppComponent } from './app.component';
+import { HeroesComponent } from './heroes/heroes.component';
+
+describe('AppComponent', () => {
+  let component: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
+  let compiled: any;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule
+      ],
+      declarations: [
+        AppComponent,
+        HeroesComponent
+      ],
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+    compiled = fixture.debugElement.nativeElement;
+  });
+
+  it('should create the app', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it(`should have as title 'Tour of Heroes'`, () => {
+    expect(component.title).toEqual('Tour of Heroes');
+  });
+
+  it('should have app-heroes', () => {
+    expect(compiled.querySelector('app-heroes')).toBeDefined();
+  });
+});
+```
+Result of the excution
+```text
+17 11 2019 18:35:30.532:INFO [Chrome 78.0.3904 (Mac OS X 10.15.1)]: Connected on socket 5DhdOfd_v_yu29WHAAAA with id 67124381
+
+  AppComponent
+    ✓ should have app-heroes
+    ✓ should create the app
+    ✓ should have as title 'Tour of Heroes'
+
+  HeroesComponent
+    ✓ should create
+
+Chrome 78.0.3904 (Mac OS X 10.15.1): Executed 4 of 4 SUCCESS (0.151 secs / 0.138 secs)
+TOTAL: 4 SUCCESS
+```

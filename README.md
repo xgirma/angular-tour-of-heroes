@@ -530,3 +530,5 @@ Connected on socket 5DhdOfd_v_yu29WHAAAA with id 67124381
 Chrome 78.0.3904 (Mac OS X 10.15.1): Executed 4 of 4 SUCCESS (0.151 secs / 0.138 secs)
 TOTAL: 4 SUCCESS
 ```
+
+As shown above, the `HeroesComponent` have one default test and it is passing. We need to add one more test to 'hero' bing rendered. 

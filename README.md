@@ -191,3 +191,25 @@ Executed 0 of 0 specs SUCCESS in 0.004 sec.
 ```
 
 This should tell us we are ready to start testing our application, using the provided unit- and e2e-test configuration !!!
+
+## Setting Continious Integration
+At this point we can setup our continious integration (CI) for building and test as we progress the application. CI will be our get keeper not to push code if the code fails to pass linting, unit or e2e-tests.
+
+```yaml
+language: node_js
+node_js:
+  - "10.16.3"
+addons:
+  chrome: stable
+branches:
+  only:
+    - master
+before_script:
+  - npm install -g @angular/cli
+script:
+  - ng lint
+  - npm run start &
+  - npm test -- --watch false --browsers ChromeHeadless
+  - npm run e2e:update-webdriver
+  - npm run e2e:travis
+```

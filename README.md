@@ -36,9 +36,11 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('angular-tour-of-heroes app is running!');
+    expect(compiled.querySelector('.content span').textContent)
+      .toContain('angular-tour-of-heroes app is running!');
   });
 });
+
 ``` 
 
 #### e2e test: AppComponent
@@ -67,4 +69,3 @@ describe('workspace-project App', () => {
   });
 });
 ```
-

@@ -10,7 +10,7 @@
     "e2e:travis": "npx protractor --capabilities.chromeOptions.args=--headless e2e/protractor.conf.js",
     "start": "ng serve",
     "build": "ng build",
-    "deploy:ghpages": "ng build --prod --base-href=\"/angular-tour-of-heroes/\",
+    "deploy:ghpages": "ng build --prod --base-href=\"/angular-tour-of-heroes/\"",
     "deploy": "npm run deploy:ghpages && npx ngh --dir=dist/angular-tour-of-heroes"
   },
   "private": true,

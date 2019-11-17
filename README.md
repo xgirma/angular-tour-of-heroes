@@ -100,3 +100,39 @@ workspace-project App
           at /Users/girmae.nigusse/WebstormProjects/angular-tour-of-heroes/node_modules/selenium-webdriver/lib/promise.js:668:7
           at process._tickCallback (internal/process/next_tick.js:68:7)Error:
 ```
+
+#### unit test: AppComponent
+```diff
+import { TestBed, async } from '@angular/core/testing';
+import { AppComponent } from './app.component';
+
+describe('AppComponent', () => {
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        AppComponent
+      ],
+    }).compileComponents();
+  }));
+
+  it('should create the app', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.debugElement.componentInstance;
+    expect(app).toBeTruthy();
+  });
+
+  it(`should have as title 'angular-tour-of-heroes'`, () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.debugElement.componentInstance;
+    expect(app.title).toEqual('angular-tour-of-heroes');
+  });
+
+-  it('should render title', () => {
+-    const fixture = TestBed.createComponent(AppComponent);
+-    fixture.detectChanges();
+-    const compiled = fixture.debugElement.nativeElement;
+-    expect(compiled.querySelector('.content span').textContent)
+-      .toContain('angular-tour-of-heroes app is running!');
+-  });
+});
+```

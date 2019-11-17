@@ -5,6 +5,7 @@ export class AppHeroes {
   title = element(by.id('dtl'));
   id = element(by.id('hro-id'));
   name = element(by.css('#hro-name > label > input'));
+  selected = element(by.css('li.selected'));
 
   navigateTo() {
     browser.get(browser.baseUrl);
@@ -18,8 +19,18 @@ export class AppHeroes {
   getId() {
     return this.id.getText() as Promise<string>;
   }
+
   setName(name) {
     this.name.clear();
     return this.name.sendKeys(name) as Promise<any>;
+  }
+
+  selectHero(index) {
+    const heroes = element.all(by.css('.badge'));
+    return heroes.get(index).click() as Promise<void>;
+  }
+
+  getSelected() {
+    return this.selected.getText() as Promise<string>;
   }
 }

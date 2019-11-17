@@ -6,6 +6,7 @@ describe('AppHeroes', () => {
   beforeAll(() => {
     page = new AppHeroes();
     page.navigateTo();
+    page.selectHero(0);
   });
 
   it('should have title', () => {
@@ -19,5 +20,6 @@ describe('AppHeroes', () => {
   it('should have name input', async () => {
     await page.setName('Foo');
     expect(page.getTitle()).toEqual('FOO Details');
+    expect(page.getSelected()).toContain('Foo');
   });
 });

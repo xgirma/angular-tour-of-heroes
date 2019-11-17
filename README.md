@@ -351,7 +351,7 @@ export class AppPage {
 ```
 
 #### app.e2e-spec.ts
-```typescript
+```diff
 import { AppPage } from './app.po';
 import { browser, logging } from 'protractor';
 
@@ -362,10 +362,10 @@ describe('workspace-project App', () => {
     page = new AppPage();
   });
 
-  it('should display title', () => {
-    page.navigateTo();
-    expect(page.getTitleText()).toEqual('Tour of Heroes');
-  });
++  it('should display title', () => {
++    page.navigateTo();
++    expect(page.getTitleText()).toEqual('Tour of Heroes');
++  });
 
   afterEach(async () => {
     // Assert that there are no errors emitted from the browser

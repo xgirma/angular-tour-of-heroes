@@ -329,3 +329,50 @@ describe('AppComponent', () => {
   });
 });
 ```
+
+For the e2e-test this is the time to add a test for the title. First we will element seelctor and text 'getter' in the `page-object` then add assertion for the new title in our test (`spec`). 
+
+#### app.po.ts
+```diff
+import { browser, by, element } from 'protractor';
+
+export class AppPage {
+  navigateTo() {
+    return browser.get(browser.baseUrl) as Promise<any>;
+  }
+
+  getTitleText() {
+-    return element(by.css('app-root .content span')).getText() as Promise<string>;
++    return element(by.css('h1')).getText() as Promise<string>;
+  }
+}
+```
+
+#### app.e2e-spec.ts
+```typescript
+import { AppPage } from './app.po';
+import { browser, logging } from 'protractor';
+
+describe('workspace-project App', () => {
+  let page: AppPage;
+
+  beforeEach(() => {
+    page = new AppPage();
+  });
+
+  it('should display title', () => {
+    page.navigateTo();
+    expect(page.getTitleText()).toEqual('Tour of Heroes');
+  });
+
+  afterEach(async () => {
+    // Assert that there are no errors emitted from the browser
+    const logs = await browser.manage().logs().get(logging.Type.BROWSER);
+    expect(logs).not.toContain(jasmine.objectContaining({
+      level: logging.Level.SEVERE,
+    } as logging.Entry));
+  });
+});
+```
+
+Both your unit test and e2e tests are passing now.

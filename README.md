@@ -212,8 +212,8 @@ We will deploy the app from our local, using `npm run deploy`, hence we don't ne
     "e2e:local": "ng e2e",
     "e2e:travis": "npx protractor --capabilities.chromeOptions.args=--headless e2e/protractor.conf.js",
     "start": "ng serve",
-    "build": "ng build",
-    "deploy": "ng build --prod --base-href=\"/angular-tour-of-heroes/\" && npx ngh --dir=dist/angular-tour-of-heroes"
+    "build:hgpages": "ng build --prod --base-href=\"/angular-tour-of-heroes/\"",
+    "deploy": "npm run build:hgpages && npx ngh --dir=dist/angular-tour-of-heroes"
   },
   "private": true,
   "dependencies": {

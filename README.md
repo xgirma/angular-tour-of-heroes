@@ -476,7 +476,7 @@ Compare the above snippet with the below.
 
 ```typescript
 import {TestBed, async, ComponentFixture} from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+
 import { AppComponent } from './app.component';
 import { HeroesComponent } from './heroes/heroes.component';
 
@@ -487,9 +487,6 @@ describe('AppComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule
-      ],
       declarations: [
         AppComponent,
         HeroesComponent
@@ -519,7 +516,8 @@ describe('AppComponent', () => {
 ```
 Result of the excution
 ```text
-17 11 2019 18:35:30.532:INFO [Chrome 78.0.3904 (Mac OS X 10.15.1)]: Connected on socket 5DhdOfd_v_yu29WHAAAA with id 67124381
+17 11 2019 18:35:30.532:INFO [Chrome 78.0.3904 (Mac OS X 10.15.1)]: 
+Connected on socket 5DhdOfd_v_yu29WHAAAA with id 67124381
 
   AppComponent
     ✓ should have app-heroes

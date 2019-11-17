@@ -1,6 +1,6 @@
 # Testing Angular Tour Of Heroes
 Exploring the process of the unit- and e2e-testing the Tour of Heroes application. 
-Focusing on the connection between application progression and test development `changes`.
+Focusing on the connection between application progression and test development changes.
 
 ## Bootstraping
 AppComponent is the application shell. There is not much to test, at this point. 

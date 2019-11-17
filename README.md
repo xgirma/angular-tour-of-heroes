@@ -169,7 +169,8 @@ Now the unit-tests should all pass. For e2e-test there will be no test to pass o
 
 #### unit test: AppComponent
 ```text
-17 11 2019 13:50:47.437:INFO [Chrome 78.0.3904 (Mac OS X 10.15.1)]: Connected on socket BxH0NdUALyuLhlXKAAAA with id 55646172
+17 11 2019 13:50:47.437:INFO [Chrome 78.0.3904 (Mac OS X 10.15.1)]: 
+Connected on socket BxH0NdUALyuLhlXKAAAA with id 55646172
 
   AppComponent
     ✓ should create the app

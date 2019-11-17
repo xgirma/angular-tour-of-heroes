@@ -276,3 +276,54 @@ script:
   - npm run e2e:update-webdriver
   - npm run e2e:travis
 ```
+
+## AppComponent (v0.1)
+Our App begins here. First thing we change the title. See details [here](https://angular.io/tutorial/toh-pt0)
+
+#### app.component.ts
+```diff
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+-  title = 'angular-tour-of-heroes';
++  title = 'Tour of Heroes';
+}
+```
+
+```html
+<h1>{{title}}</h1>
+```
+
+As expected, the unit test assertion we have for the title fails. We could simply update the expected value with the new title and test will pass. 
+
+```typescript
+import { TestBed, async } from '@angular/core/testing';
+import { AppComponent } from './app.component';
+
+describe('AppComponent', () => {
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        AppComponent
+      ],
+    }).compileComponents();
+  }));
+
+  it('should create the app', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.debugElement.componentInstance;
+    expect(app).toBeTruthy();
+  });
+
+  it(`should have as title 'Tour of Heroes'`, () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.debugElement.componentInstance;
+    expect(app.title).toEqual('Tour of Heroes');
+  });
+});
+```

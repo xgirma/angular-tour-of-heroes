@@ -28,7 +28,7 @@
         /***/ (function (module, __webpack_exports__, __webpack_require__) {
             "use strict";
             __webpack_require__.r(__webpack_exports__);
-            /* harmony default export */ __webpack_exports__["default"] = ("<h1 id=\"title\">{{title}}</h1>\n");
+            /* harmony default export */ __webpack_exports__["default"] = ("<h1 id=\"title\">{{title}}</h1>\n<app-heroes></app-heroes>\n");
             /***/ 
         }),
         /***/ "./node_modules/raw-loader/dist/cjs.js!./src/app/heroes/heroes.component.html": 
@@ -39,7 +39,7 @@
         /***/ (function (module, __webpack_exports__, __webpack_require__) {
             "use strict";
             __webpack_require__.r(__webpack_exports__);
-            /* harmony default export */ __webpack_exports__["default"] = ("<p>heroes works!</p>\n");
+            /* harmony default export */ __webpack_exports__["default"] = ("<h2 id=\"dtl\">{{hero.name | uppercase}} Details</h2>\n<div id=\"hro-id\"><span>id: </span>{{hero.id}}</div>\n<div id=\"hro-name\">\n  <label>name:\n    <input [(ngModel)]=\"hero.name\" placeholder=\"name\" name=\"name\"/>\n  </label>\n</div>\n");
             /***/ 
         }),
         /***/ "./node_modules/tslib/tslib.es6.js": 
@@ -420,6 +420,7 @@
             /* harmony import */ var _app_routing_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./app-routing.module */ "./src/app/app-routing.module.ts");
             /* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./app.component */ "./src/app/app.component.ts");
             /* harmony import */ var _heroes_heroes_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./heroes/heroes.component */ "./src/app/heroes/heroes.component.ts");
+            /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm2015/forms.js");
             var AppModule = /** @class */ (function () {
                 function AppModule() {
                 }
@@ -433,7 +434,8 @@
                     ],
                     imports: [
                         _angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"],
-                        _app_routing_module__WEBPACK_IMPORTED_MODULE_3__["AppRoutingModule"]
+                        _app_routing_module__WEBPACK_IMPORTED_MODULE_3__["AppRoutingModule"],
+                        _angular_forms__WEBPACK_IMPORTED_MODULE_6__["FormsModule"]
                     ],
                     providers: [],
                     bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_4__["AppComponent"]]
@@ -465,6 +467,10 @@
             /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
             var HeroesComponent = /** @class */ (function () {
                 function HeroesComponent() {
+                    this.hero = {
+                        id: 1,
+                        name: 'Windstorm'
+                    };
                 }
                 HeroesComponent.prototype.ngOnInit = function () {
                 };

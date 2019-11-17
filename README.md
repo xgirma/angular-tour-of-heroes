@@ -193,8 +193,71 @@ Executed 0 of 0 specs SUCCESS in 0.004 sec.
 This should tell us we are ready to start testing our application, using the provided unit- and e2e-test configuration !!!
 
 ## Setting Continious Integration
-At this point we can setup our continious integration (CI) for building and test as we progress the application. CI will be our get keeper not to push code if the code fails to pass linting, unit or e2e-tests.
+At this point, we can set up our continuous integration (CI) for building and test as we progress the application. CI will be our get keeper not to push code if the code fails to pass linting, unit or e2e-tests. 
 
+Below is the script you need to run the application in the background, run your unit- and e2e-tests in `headless` Chrome using Travis-ci. 
+
+Install `karma-spec-reporter` and `angular-cli-ghpages` in your `devDependecies`. The first will generate unit-test results in console, and the later will be used to deploy your app in github-pages. 
+
+We will deploy the app from our local, using `npm run deploy`, hence we don't need to store our github auth-secret in Travis-ci.
+
+#### package.json
+```json
+{
+  "name": "angular-tour-of-heroes",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "lint": "ng lint",
+    "test": "ng test",
+    "e2e:update-webdriver": "npx webdriver-manager update --gecko=false",
+    "e2e:local": "ng e2e",
+    "e2e:travis": "npx protractor --capabilities.chromeOptions.args=--headless e2e/protractor.conf.js",
+    "start": "ng serve",
+    "build": "ng build",
+    "deploy": "ng build --prod --base-href=\"/angular-tour-of-heroes/\" && npx ngh --dir=dist/angular-tour-of-heroes"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "8.2.14",
+    "@angular/common": "8.2.14",
+    "@angular/compiler": "8.2.14",
+    "@angular/core": "8.2.14",
+    "@angular/forms": "8.2.14",
+    "@angular/platform-browser": "8.2.14",
+    "@angular/platform-browser-dynamic": "8.2.14",
+    "@angular/router": "8.2.14",
+    "rxjs": "6.5.3",
+    "tslib": "1.10.0",
+    "zone.js": "0.10.2"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "0.803.19",
+    "@angular/cli": "8.3.19",
+    "@angular/compiler-cli": "8.2.14",
+    "@angular/language-service": "8.2.14",
+    "@types/jasmine": "3.4.6",
+    "@types/jasminewd2": "2.0.8",
+    "@types/node": "8.10.59",
+    "angular-cli-ghpages": "0.6.0",
+    "codelyzer": "5.2.0",
+    "jasmine-core": "3.5.0",
+    "jasmine-spec-reporter": "4.2.1",
+    "karma": "4.4.1",
+    "karma-chrome-launcher": "2.2.0",
+    "karma-coverage-istanbul-reporter": "2.1.0",
+    "karma-jasmine": "2.0.1",
+    "karma-jasmine-html-reporter": "1.4.2",
+    "karma-spec-reporter": "0.0.32",
+    "protractor": "5.4.2",
+    "ts-node": "7.0.1",
+    "tslint": "5.20.1",
+    "typescript": "3.5.3"
+  }
+}
+```
+
+#### .travis.yml
 ```yaml
 language: node_js
 node_js:

@@ -295,12 +295,14 @@ export class AppComponent {
 }
 ```
 
+#### app.component.html
 ```html
 <h1>{{title}}</h1>
 ```
 
 As expected, the unit test assertion we have for the title fails. We could simply update the expected value with the new title and test will pass. 
 
+#### app.component.spec.ts
 ```typescript
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';

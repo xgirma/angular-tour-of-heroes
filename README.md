@@ -465,4 +465,7 @@ describe('AppComponent', () => {
 });
 ```
 
+  > Either unit- and/or e2e-tests could fail for a number of reasons that is not related to your
+  > application feature. Therfore, a test failour does not always correlate with application failour.
+
 Now all tests are passing. Let us add additional unit- and e2e-tests for the `HeroesComponent`. 

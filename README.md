@@ -434,6 +434,7 @@ One test for the `HeroesComponent` pass. At this point, your application works f
 
 We just need to do the same with our tests, but we have to do enter that manually. 
 
+#### app.component.spec.ts
 ```diff
 import { TestBed, async } from '@angular/core/testing';
 
@@ -463,3 +464,5 @@ describe('AppComponent', () => {
   });
 });
 ```
+
+Now all tests are passing. Let us add additional unit- and e2e-tests for the `HeroesComponent`. 

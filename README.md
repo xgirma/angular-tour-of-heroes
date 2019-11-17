@@ -195,8 +195,6 @@ This should tell us we are ready to start testing our application, using the pro
 ## Setting Continious Integration
 At this point, we can set up our continuous integration (CI) for building and test as we progress the application. CI will be our get keeper not to push code if the code fails to pass linting, unit or e2e-tests. 
 
-Below is the script you need to run the application in the background, run your unit- and e2e-tests in `headless` Chrome using Travis-ci. 
-
 Install `karma-spec-reporter` and `angular-cli-ghpages` in your `devDependecies`. The first will generate unit-test results in console, and the later will be used to deploy your app in github-pages. 
 
 We will deploy the app from our local, using `npm run deploy`, hence we don't need to store our github auth-secret in Travis-ci.
@@ -256,6 +254,7 @@ We will deploy the app from our local, using `npm run deploy`, hence we don't ne
   }
 }
 ```
+Below is the script you need to run the application in the background, run your unit- and e2e-tests in headless Chrome using Travis-ci.
 
 #### .travis.yml
 ```yaml

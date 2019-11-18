@@ -1268,3 +1268,53 @@ export class HeroesComponent implements OnInit {
 After this change almost all of the test for `HeroesComponent` should fail. Tests for `AppComponent` should work as before. 
 Below we will update the unit- and e2e-tests to adapt this change. 
 
+We will classify the unit test for the `HeroComponent` in to three parts:
+
+  1. the inital state, where we have no selected hero
+  2. the state we get details after we select a hero
+  3. the state we get when we modify a selected hero
+  
+### :cat: unit test: heroes.component.spec.ts (part 1)
+```typescript
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
+
+import { HeroesComponent } from './heroes.component';
+import { HEROES } from '../mock-heroes';
+
+describe('HeroesComponent: init', () => {
+  let component: HeroesComponent;
+  let fixture: ComponentFixture<HeroesComponent>;
+  let compiled: any;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [ FormsModule ],
+      declarations: [ HeroesComponent ]
+    })
+      .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(HeroesComponent);
+    component = fixture.componentInstance;
+    component.heroes = HEROES;
+    fixture.detectChanges();
+    compiled = fixture.debugElement.nativeElement;
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('should have heroes', () => {
+    expect(component.heroes).toBeDefined();
+  });
+
+  it('should not have selected hero', () => {
+    expect(component.selectedHero).not.toBeDefined();
+    expect(compiled.querySelector('#details')).toBe(null);
+  });
+});
+```
+

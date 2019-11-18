@@ -1421,3 +1421,32 @@ describe('HeroesComponent: input', () => {
 });
 ```
 
+Test results.
+
+### :cat: unit test: result: heroes.component.spec.ts
+```text
+17 11 2019 23:24:07.534:INFO [Chrome 78.0.3904 (Mac OS X 10.15.1)]: 
+Connected on socket 6y91viPShxMH-04mAAAA with id 51344877
+
+  HeroesComponent: init
+    ✓ should create
+    ✓ should have heroes
+    ✓ should not have selected hero
+
+  HeroesComponent: select
+    ✓ should have id 11
+    ✓ should create
+    ✓ should have title Dr Nice Details
+    ✓ should have text 'Dr Nice' in the input
+
+  HeroesComponent: input
+    ✓ input should accept new value
+
+  AppComponent
+    ✓ should have as title 'Tour of Heroes'
+    ✓ should have app-heroes
+    ✓ should create the app
+
+Chrome 78.0.3904 (Mac OS X 10.15.1): Executed 11 of 11 SUCCESS (0.386 secs / 0.348 secs)
+TOTAL: 11 SUCCESS
+```

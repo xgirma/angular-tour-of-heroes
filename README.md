@@ -1276,7 +1276,7 @@ We will classify the unit test for the `HeroComponent` in to three parts:
   2. the state we get details after we select a hero
   3. the state we get when we modify a selected hero
   
-### :cat: unit test: heroes.component.spec.ts (part 1)
+### :cat: unit test: heroes.component.spec.ts
 ```typescript
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';

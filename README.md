@@ -1249,17 +1249,19 @@ export class HeroesComponent implements OnInit {
 
 + <h2>My Heroes</h2>
 + <ul class="heroes">
-+  <li *ngFor="let hero of heroes" (click)="onSelect(hero)">
++  <li *ngFor="let hero of heroes"
++      [class.selected]="hero === selectedHero"
++      (click)="onSelect(hero) ">
 +    <span class="badge">{{hero.id}}</span> {{hero.name}}
 +  </li>
 + </ul>
 
-+ <div *ngIf="selectedHero">
-+  <h2>{{selectedHero.name | uppercase}} Details</h2>
-+  <div><span>id: </span>{{selectedHero.id}}</div>
-+  <div>
++ <div *ngIf="selectedHero" id="details">
++  <h2 id="dtl">{{selectedHero.name | uppercase}} Details</h2>
++  <div id="hro-id"><span>id: </span>{{selectedHero.id}}</div>
++  <div id="hro-name">
 +    <label>name:
-+      <input [(ngModel)]="selectedHero.name" placeholder="name"/>
++      <input [(ngModel)]="selectedHero.name" placeholder="name" name="name"/>
 +    </label>
 +  </div>
 + </div>

@@ -1537,3 +1537,17 @@ Executed 4 of 4 specs SUCCESS in 2 secs.
 
 ## AppComponent(0.2), HeroesComponent(0.4), HeroDetailComponent(0.1)
 At this point, we will be splitting the `HeroesComponent` into two parts, master (list view) and detail (detail view). See details [here](https://angular.io/tutorial/toh-pt3#masterdetail-components)
+
+As the applictaion gets more components, we will split this section into two. 
+
+First, we will remove the detail section from the `HeroesComponent`. Then `comment` all faling tests. Update and/or introduce new tests. 
+
+Second, we will build the `HeroDetailComponent` tests, by `re-using` the commented test, update existing tests, and/or introduce new ones.
+
+  > When a unit of application split into parts, already existing test needs to be splited. Hence, some
+  > application integration logics the was being testsed when the unit was one could not be tested using
+  > the splited testes. Therefore, the more we split our applications into a smaller unit, the more we 
+  > loose the ablility of testing our application integration point using unit test.
+
+Note that which of the commented tests could be-reused, and which we have to descard, and which new tests we need introduce to test `HeroDetailComponent`. The part that we are going to descard needs to be tested with e2e tests.
+

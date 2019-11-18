@@ -1114,3 +1114,90 @@ Connected on socket SPvsaEf-8W7L0e2JAAAA with id 61592508
 Chrome 78.0.3904 (Mac OS X 10.15.1): Executed 7 of 7 SUCCESS (0.306 secs / 0.27 secs)
 TOTAL: 7 SUCCESS
 ```
+
+The change we need to make on the e2e-test is minimal as shown below.
+
+### :dog: e2e test: heroes.po.ts
+```diff
+import { browser, by, element, ExpectedConditions as EC } from 'protractor';
+
+export class AppHeroes {
+  body = element(by.css('body'));
+  title = element(by.id('dtl'));
+  id = element(by.id('hro-id'));
+-  name = element(by.id('hro-name'));
++  name = element(by.css('#hro-name > label > input'));
+
+  navigateTo() {
+    browser.get(browser.baseUrl);
+    return browser.wait(EC.presenceOf(this.body), 5000) as Promise< void>;
+  }
+
+  getTitle() {
+    return this.title.getText() as Promise<any>;
+  }
+
+  getId() {
+    return this.id.getText() as Promise<any>;
+  }
+
+-  getName() {
+-    return this.name.getText() as Promise<any>;
+-  }
+
++  setName(name) {
++    this.name.clear();
++    return this.name.sendKeys(name) as Promise<any>;
++  }
+}
+```
+
+### :dog: e2e test: heroes.e2e-spec.ts
+```diff
+import { AppHeroes } from './heroes.po';
+
+describe('AppHeroes', () => {
+  let page: AppHeroes;
+  const hero = {
+      id: 1,
+      name: 'Windstorm'
+  };
+
+  beforeAll(() => {
+    page = new AppHeroes();
+    page.navigateTo();
+  });
+
+  it(`should have title`, () => {
+    expect(page.getTitle()).toContain(`${(hero.name).toUpperCase()} Details`);
+  });
+
+  it(`should have id`, () => {
+    expect(page.getId()).toContain(`id: ${hero.id}`);
+  });
+
+-  it(`should have name`, () => {
+-    expect(page.getName()).toContain(`name: ${hero.name}`);
+-  });
+
++  it('should have editable hero name', async () => {
++    await page.setName('Dr. Nice');
++    expect(page.getTitle()).toEqual('DR. NICE Details');
++  });
+});
+```
+
+### :dog: e2e test: result: heroes.e2e-spec.ts
+```text
+Jasmine started
+
+  AppComponent
+    ✓ should display title
+
+  AppHeroes
+    ✓ should have title
+    ✓ should have id
+    ✓ should have editable hero name
+
+Executed 4 of 4 specs SUCCESS in 2 secs.
+```

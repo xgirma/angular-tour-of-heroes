@@ -1553,7 +1553,24 @@ Note that which of the commented tests could be-reused, and which we have to des
 
 ### :pig: view: heroes.component.html
 ```diff
+<h2>My Heroes</h2>
+<ul class="heroes">
+  <li *ngFor="let hero of heroes"
+      [class.selected]="hero === selectedHero"
+      (click)="onSelect(hero) ">
+    <span class="badge">{{hero.id}}</span> {{hero.name}}
+  </li>
+</ul>
 
+- <div *ngIf="selectedHero" id="details">
+-  <h2 id="dtl">{{selectedHero.name | uppercase}} Details</h2>
+-  <div id="hro-id"><span>id: </span>{{selectedHero.id}}</div>
+-  <div id="hro-name">
+-    <label>name:
+-      <input [(ngModel)]="selectedHero.name" placeholder="name" name="name"/>
+-    </label>
+-  </div>
+- </div>
 ```
 
   > The more smaller units of an application being unit testes, the more the integration points of our 

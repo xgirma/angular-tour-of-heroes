@@ -1450,3 +1450,87 @@ Connected on socket 6y91viPShxMH-04mAAAA with id 51344877
 Chrome 78.0.3904 (Mac OS X 10.15.1): Executed 11 of 11 SUCCESS (0.386 secs / 0.348 secs)
 TOTAL: 11 SUCCESS
 ```
+
+### :dog: e2e test: heroes.po
+```typescript
+import { browser, by, element, ExpectedConditions as EC } from 'protractor';
+
+export class AppHeroes {
+  body = element(by.css('body'));
+  title = element(by.id('dtl'));
+  id = element(by.id('hro-id'));
+  name = element(by.css('#hro-name > label > input'));
+  selected = element(by.css('li.selected'));
+
+  navigateTo() {
+    browser.get(browser.baseUrl);
+    return browser.wait(EC.presenceOf(this.body), 5000) as Promise< void>;
+  }
+
+  getTitle() {
+    return this.title.getText() as Promise<any>;
+  }
+
+  getId() {
+    return this.id.getText() as Promise<any>;
+  }
+
+  setName(name) {
+    this.name.clear();
+    return this.name.sendKeys(name) as Promise<any>;
+  }
+
+  selectHero(index) {
+    const heroes = element.all(by.css('.badge'));
+    return heroes.get(index).click() as Promise<void>;
+  }
+
+  getSelected() {
+    return this.selected.getText() as Promise<string>;
+  }
+}
+```
+
+### :dog: e2e test: heroes.e2e-spec.ts
+```typescript
+import { AppHeroes } from './heroes.po';
+
+describe('AppHeroes', () => {
+  let page: AppHeroes;
+
+  beforeAll(() => {
+    page = new AppHeroes();
+    page.navigateTo();
+    page.selectHero(0);
+  });
+
+  it('should have title', () => {
+    expect(page.getTitle()).toContain('Details');
+  });
+
+  it('should have id', () => {
+    expect(page.getId()).toContain('id:');
+  });
+
+  it('should have name input', async () => {
+    await page.setName('Dr. Nice');
+    expect(page.getTitle()).toEqual('DR. NICE Details');
+    expect(page.getSelected()).toContain('Dr. Nice');
+  });
+});
+```
+
+### :dog: e2e test: result: heroes.e2e-spec.ts
+```text
+Jasmine started
+
+  AppComponent
+    ✓ should display title
+
+  AppHeroes
+    ✓ should have title
+    ✓ should have id
+    ✓ should have name input
+
+Executed 4 of 4 specs SUCCESS in 2 secs.
+```

@@ -731,13 +731,17 @@ HeroesComponent
 
 ### :dog: e2e test: result: heroes.e2e-spec.ts
 ```text
-Jasmine started
-
-  AppComponent
-    ✓ should display title
-
-  AppHeroes
+AppHeroes
     ✗ should have name 'Windstorm'
       - Failed: No element found using locator: By(css selector, app-heroes > p)
           at elementArray
+```
+
+First let us add IDs for the newer elements just introduced to make them accesssable for testing. 
+
+### :pig: view: heroes.component.htm
+```html
+<h2>{{hero.name | uppercase}} Details</h2>
+<h2 id="dtl">{{hero.name | uppercase}} Details</h2>
+<div id="hro-id"><span>id: </span>{{hero.id}}</div>
 ```

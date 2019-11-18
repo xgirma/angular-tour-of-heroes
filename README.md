@@ -792,3 +792,101 @@ describe('HeroesComponent', () => {
   });
 });
 ```
+
+### :cat: unit test: result: heroes.component.spec.ts
+```text
+17 11 2019 20:57:28.222:INFO [Chrome 78.0.3904 (Mac OS X 10.15.1)]: 
+Connected on socket xSYvLvZLsl7yTbN4AAAA with id 50080976
+
+  AppComponent
+    ✓ should create the app
+    ✓ should have as title 'Tour of Heroes'
+    ✓ should have app-heroes
+
+  HeroesComponent
+    ✓ should create
+    ✓ should have hero id
+    ✓ should have hero title
+    ✓ should have hero name
+
+Chrome 78.0.3904 (Mac OS X 10.15.1): Executed 7 of 7 SUCCESS (0.223 secs / 0.181 secs)
+TOTAL: 7 SUCCESS
+```
+
+### :dog: e2e test: heroes.po.ts
+```typescript
+import { browser, by, element, ExpectedConditions as EC } from 'protractor';
+
+export class AppHeroes {
+  body = element(by.css('body'));
+  title = element(by.id('dtl'));
+  id = element(by.id('hro-id'));
+  name = element(by.id('hro-name'));
+
+  navigateTo() {
+    browser.get(browser.baseUrl);
+    return browser.wait(EC.presenceOf(this.body), 5000) as Promise< void>;
+  }
+
+  getTitle() {
+    return this.title.getText() as Promise<any>;
+  }
+
+  getId() {
+    return this.id.getText() as Promise<any>;
+  }
+
+  getName() {
+    return this.name.getText() as Promise<any>;
+  }
+}
+```
+
+### :dog: e2e test: heroes.e2e-spec.ts
+```typescript
+import { AppHeroes } from './heroes.po';
+
+describe('AppHeroes', () => {
+  let page: AppHeroes;
+  const hero = {
+      id: 1,
+      name: 'Windstorm'
+  };
+
+  beforeAll(() => {
+    page = new AppHeroes();
+    page.navigateTo();
+  });
+
+  it(`should have title`, () => {
+    expect(page.getTitle()).toContain(`${(hero.name).toUpperCase()} Details`);
+  });
+
+  it(`should have id`, () => {
+    expect(page.getId()).toContain(`id: ${hero.id}`);
+  });
+
+  it(`should have name`, () => {
+    expect(page.getName()).toContain(`name: ${hero.name}`);
+  });
+});
+```
+
+### :dog: e2e test: result: heroes.e2e-spec.ts
+```text
+Jasmine started
+
+  AppComponent
+    ✓ should display title
+
+  AppHeroes
+    ✓ should have title
+    ✓ should have id
+    ✓ should have name
+
+Executed 4 of 4 specs SUCCESS in 3 secs.
+```
+
+All tests pass.
+
+## AppComponent(0.2), HeroesComponent(0.3)

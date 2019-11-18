@@ -1265,3 +1265,4 @@ export class HeroesComponent implements OnInit {
 + </div>
 ```
 
+After this change almost all of the test should fail.

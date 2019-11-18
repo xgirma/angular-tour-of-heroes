@@ -1535,5 +1535,5 @@ Jasmine started
 Executed 4 of 4 specs SUCCESS in 2 secs.
 ```
 
-AppComponent(0.2), HeroesComponent(0.4)
+## AppComponent(0.2), HeroesComponent(0.4)
 At this point, we will be splitting the `HeroesComponent` into two parts, master (list view) and detail (detail view). See details [here](https://angular.io/tutorial/toh-pt3#masterdetail-components)

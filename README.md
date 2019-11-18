@@ -1,4 +1,4 @@
-# Testing Angular Tour Of Heroes
+# :cat: :dog: Testing Angular Tour Of Heroes
 Exploring the process of the unit- and e2e-testing the Tour of Heroes application. 
 Focusing on the connection between application progression and test development changes.
 
@@ -282,7 +282,7 @@ script:
 ## AppComponent (v0.1)
 Our App begins here. First thing we change the title. See details [here](https://angular.io/tutorial/toh-pt0)
 
-#### app.component.ts
+#### :cat: unit test: app.component.ts
 ```diff
 import { Component } from '@angular/core';
 
@@ -297,14 +297,14 @@ export class AppComponent {
 }
 ```
 
-#### app.component.html
+#### :pig: view: app.component.html
 ```html
 <h1>{{title}}</h1>
 ```
 
 As expected, the unit test assertion we have for the title fails. We could simply update the expected value with the new title and test will pass. 
 
-#### app.component.spec.ts
+#### :cat: unit test: app.component.spec.ts
 ```typescript
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
@@ -334,7 +334,7 @@ describe('AppComponent', () => {
 
 For the e2e-test this is the time to add a test for the title. First we will element seelctor and text 'getter' in the `page-object` then add assertion for the new title in our test (`spec`). 
 
-#### app.po.ts
+#### :dog: e2e test: app.po.ts
 ```diff
 import { browser, by, element } from 'protractor';
 
@@ -350,7 +350,7 @@ export class AppPage {
 }
 ```
 
-#### app.e2e-spec.ts
+#### :dog: e2e test: app.e2e-spec.ts
 ```diff
 import { AppPage } from './app.po';
 import { browser, logging } from 'protractor';
@@ -385,7 +385,7 @@ Now we will use HeroesComponent to show hero information and insert that in the 
 
 Generate the HeroesComponent; unit and e2e-test are stil passing. Let us build the `HeroesComponent`.
 
-#### heroes.component.ts
+#### :cow: component: heroes.component.ts
 ```diff
 import { Component, OnInit } from '@angular/core';
 
@@ -405,20 +405,22 @@ export class HeroesComponent implements OnInit {
 }
 ```
 
-#### heroes.component.html
+#### :pig: view: heroes.component.html
 ```diff
 - <p>heroes works!</p>
 + {{hero}}
 ```
 Then, insert `HeroesComponent` inside the parent `AppComponent`.
 
-#### app.component.html
+#### :pig: view: app.component.html
 ```diff
 <h1>{{title}}</h1>
 + <app-heroes></app-heroes>
 ```
 
 Note, we introduce a change to the `AppComponent` that cause all unit-tests for the `AppComponent` to fail. 
+
+### :cat: unit test: app.component.spec.ts
 ```text
 1) should create the app
      AppComponent
@@ -435,7 +437,7 @@ One test for the `HeroesComponent` pass. At this point, your application works f
 
 We just need to do the same with our tests, but we have to do enter that manually. 
 
-#### app.component.spec.ts
+### :cat: unit test: app.component.spec.ts
 ```diff
 import { TestBed, async } from '@angular/core/testing';
 
@@ -475,7 +477,7 @@ At this point we will cleanup the existing `AppComponent` test, to reduce repeti
 
 Compare the above snippet with the below.
 
-#### app.component.spec.ts
+### :cat: unit test: app.component.spec.ts
 ```typescript
 import {TestBed, async, ComponentFixture} from '@angular/core/testing';
 
@@ -517,6 +519,8 @@ describe('AppComponent', () => {
 });
 ```
 Result of the excution
+
+### :cat: unit test: result: app.component.spec.ts, heroes.component.spec.ts
 ```text
 17 11 2019 18:35:30.532:INFO [Chrome 78.0.3904 (Mac OS X 10.15.1)]: 
 Connected on socket 5DhdOfd_v_yu29WHAAAA with id 67124381
@@ -535,7 +539,7 @@ TOTAL: 4 SUCCESS
 
 As shown above, the `HeroesComponent` have one default test and it is passing. We need to add one more test to 'hero' bing rendered. 
 
-#### heroes.component.spec.ts
+#### :cat: unit test: heroes.component.spec.ts
 ```diff
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
@@ -571,6 +575,8 @@ describe('HeroesComponent', () => {
 ```
 
 When we run the test, the test will fail, because the `querySelector` could not find the element.
+
+#### :cat: unit test: heroes.component.spec.ts
 ```text
 1) should have 'Windstorm' as hero
      HeroesComponent
@@ -583,14 +589,14 @@ We need to add a Paragraph HTML tag to the content we want to search for.
   > Oftten we need to update a working application code to make it testable. Adding IDs, class-names,
   > or HTML tags are common practice. 
   
-#### heroes.component.html
+#### :pig: view: heroes.component.html
 ```diff
 - {{hero}}
 + <p>{{hero}}</p>
 ```
 Updated test with `compiled.querySelector('p')` help us to find the element, hence the assertion passes. 
 
-#### heroes.component.spec.ts
+#### :cat: unit test: heroes.component.spec.ts
 ```typescript
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
@@ -627,7 +633,7 @@ describe('HeroesComponent', () => {
 
 Unit test pass, done. Let us add e2e tests to test the hero name.
 
-#### heroes.po.ts
+#### :dog: e2e test: heroes.po.ts
 ```typescript
 import { browser, by, element, ExpectedConditions as EC } from 'protractor';
 
@@ -646,7 +652,7 @@ export class AppHeroes {
 }
 ```
 
-#### heroes.e2e-spec.ts
+#### :dog: e2e test: heroes.e2e-spec.ts
 ```typescript
 import { AppHeroes } from './heroes.po';
 
@@ -664,6 +670,7 @@ describe('AppHeroes', () => {
 });
 ```
 
+#### :dog: e2e test: reult: app.e2e-spec.ts, heroes.e2e-spec.ts
 Test excution result
 ```text
 Jasmine started

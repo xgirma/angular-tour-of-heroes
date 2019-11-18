@@ -474,6 +474,7 @@ At this point we will cleanup the existing `AppComponent` test, to reduce repeti
 
 Compare the above snippet with the below.
 
+#### app.component.spec.ts
 ```typescript
 import {TestBed, async, ComponentFixture} from '@angular/core/testing';
 
@@ -533,6 +534,7 @@ TOTAL: 4 SUCCESS
 
 As shown above, the `HeroesComponent` have one default test and it is passing. We need to add one more test to 'hero' bing rendered. 
 
+#### heroes.component.spec.ts
 ```diff
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
@@ -577,15 +579,17 @@ When we run the test, the test will fail, because the `querySelector` could not 
 
 We need to add a Paragraph HTML tag to the content we want to search for. 
 
-  > Oftten we need to update a working application code to make it testable. Adding `IDs, class-names,`
-  > or `HTML tags` are common practice. 
+  > Oftten we need to update a working application code to make it testable. Adding IDs, class-names,
+  > or HTML tags are common practice. 
   
+#### heroes.component.html
 ```diff
 - {{hero}}
 + <p>{{hero}}</p>
 ```
 Updated test with `compiled.querySelector('p')` help us to find the element, hence the assertion passes. 
 
+#### heroes.component.spec.ts
 ```typescript
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 

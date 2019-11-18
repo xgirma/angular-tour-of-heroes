@@ -355,7 +355,8 @@ export class AppPage {
 import { AppPage } from './app.po';
 import { browser, logging } from 'protractor';
 
-describe('workspace-project App', () => {
+- describe('workspace-project App', () => {
++ describe('AppComponent', () => {
   let page: AppPage;
 
   beforeEach(() => {
@@ -380,7 +381,7 @@ describe('workspace-project App', () => {
 Both your unit- and e2e-tests are passing. Now you could run your app and see the title. 
 
 ## AppComponent(0.2), HeroesComponent(0.1)
-Now we will use HeroesComponent to show hero information and insert that in the application-shell(the AppComponent). 
+Now we will use HeroesComponent to show hero information and insert that in the application-shell(the AppComponent). See details [here](https://angular.io/tutorial/toh-pt1#the-hero-editor)
 
 Generate the HeroesComponent; unit and e2e-test are stil passing. Let us build the `HeroesComponent`.
 
@@ -623,3 +624,60 @@ describe('HeroesComponent', () => {
   });
 });
 ```
+
+Unit test pass, done. Let us add e2e tests to test the hero name.
+
+#### heroes.po.ts
+```typescript
+import { browser, by, element, ExpectedConditions as EC } from 'protractor';
+
+export class AppHeroes {
+  body = element(by.css('body'));
+  name = element(by.css('app-heroes > p'));
+
+  navigateTo() {
+    browser.get(browser.baseUrl);
+    return browser.wait(EC.presenceOf(this.body), 5000) as Promise< void>;
+  }
+
+  getName() {
+    return this.name.getText() as Promise<any>;
+  }
+}
+```
+
+#### heroes.e2e-spec.ts
+```typescript
+import { AppHeroes } from './heroes.po';
+
+describe('AppHeroes', () => {
+  let page: AppHeroes;
+
+  beforeAll(() => {
+    page = new AppHeroes();
+    page.navigateTo();
+  });
+
+  it(`should have name 'Windstorm'`, () => {
+    expect(page.getName()).toContain('Windstorm');
+  });
+});
+```
+
+Test excution result
+```text
+Jasmine started
+
+  AppComponent
+    ✓ should display title
+
+  AppHeroes
+    ✓ should have name 'Windstorm'
+
+Executed 2 of 2 specs SUCCESS in 1 sec.
+[19:33:03] I/launcher - 0 instance(s) of WebDriver still running
+[19:33:03] I/launcher - chrome #01 passed
+```
+
+## AppComponent(0.2), HeroesComponent(0.2)
+Here we want to display additional hero information, inaddition to name. See details [here](https://angular.io/tutorial/toh-pt1#create-a-hero-class)

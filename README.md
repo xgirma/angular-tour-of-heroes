@@ -741,7 +741,54 @@ First let us add IDs for the newer elements just introduced to make them accesss
 
 ### :pig: view: heroes.component.htm
 ```html
-<h2>{{hero.name | uppercase}} Details</h2>
 <h2 id="dtl">{{hero.name | uppercase}} Details</h2>
 <div id="hro-id"><span>id: </span>{{hero.id}}</div>
+<div id="hro-name"><span>name: </span>{{hero.name}}</div>
+```
+Now we can write unit- and e2e-tests for testing the added hero title, id, and name.
+
+### :cat: unit test: heroes.component.spec.ts
+```typescript
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { HeroesComponent } from './heroes.component';
+
+describe('HeroesComponent', () => {
+  let component: HeroesComponent;
+  let fixture: ComponentFixture<HeroesComponent>;
+  let compiled: any;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ HeroesComponent ]
+    })
+    .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(HeroesComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+    compiled = fixture.debugElement.nativeElement;
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it(`should have hero title`, () => {
+    expect(compiled.querySelector('#dtl').textContent)
+      .toEqual((component.hero.name).toUpperCase() + ' Details');
+  });
+
+  it(`should have hero id`, () => {
+    expect(compiled.querySelector('#hro-id').textContent)
+      .toEqual('id: ' + (component.hero.id));
+  });
+
+  it(`should have hero name`, () => {
+    expect(compiled.querySelector('#hro-name').textContent)
+      .toEqual('name: ' + (component.hero.name));
+  });
+});
 ```

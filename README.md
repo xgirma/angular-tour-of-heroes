@@ -1545,9 +1545,16 @@ First, we will remove the detail section from the `HeroesComponent`. Then `comme
 Second, we will build the `HeroDetailComponent` tests, by `re-using` the commented test, update existing tests, and/or introduce new ones.
 
   > When a unit of application split into parts, already existing test needs to be splited. Hence, some
-  > application integration logics the was being testsed when the unit was one could not be tested using
+  > application integration logics that was being testsed when the unit was one could not be tested using
   > the splited testes. Therefore, the more we split our applications into a smaller unit, the more we 
   > loose the ablility of testing our application integration point using unit test.
 
 Note that which of the commented tests could be-reused, and which we have to descard, and which new tests we need introduce to test `HeroDetailComponent`. The part that we are going to descard needs to be tested with e2e tests.
 
+### :pig: view: heroes.component.html
+```diff
+
+```
+
+  > The more smaller units of an application being unit testes, the more the integration points of our 
+  > application will be missed by the unit test. Hence, we need more integration testes, such as e2e tests.

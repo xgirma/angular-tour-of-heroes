@@ -1313,6 +1313,13 @@ describe('HeroesComponent: init', () => {
   it('should have heroes', () => {
     expect(component.heroes).toBeDefined();
   });
+  
+  it('should have a list of heroes', async () => {
+    HEROES.forEach( (hero, index) => {
+      expect(compiled.querySelector(`ul > li:nth-child(${index + 1})`).textContent)
+        .toContain(hero.name);
+    });
+  });
 
   it('should not have selected hero', () => {
     expect(component.selectedHero).not.toBeDefined();
@@ -1435,7 +1442,6 @@ Connected on socket 6y91viPShxMH-04mAAAA with id 51344877
 
   HeroesComponent: select
     ✓ should have id 11
-    ✓ should create
     ✓ should have title Dr Nice Details
     ✓ should have text 'Dr Nice' in the input
 
@@ -1608,11 +1614,18 @@ describe('HeroesComponent: init', () => {
   });
 
   it('should have heroes', () => {
-    expect(component.heroes).toBeDefined();
     expect(component.selectedHero).not.toBeDefined();
+  });
+  
+  it('should have a list of heroes', async () => {
+    HEROES.forEach( (hero, index) => {
+      expect(compiled.querySelector(`ul > li:nth-child(${index + 1})`).textContent)
+        .toContain(hero.name);
+    });
   });
 
   it('should not have selected hero', () => {
+    expect(component.heroes).toBeDefined();
     expect(compiled.querySelector('#details')).toBe(null);
   });
 });
@@ -1636,10 +1649,6 @@ describe('HeroesComponent: init', () => {
 //     component.heroes = HEROES;
 //     fixture.detectChanges();
 //     compiled = fixture.debugElement.nativeElement;
-//   });
-//
-//   it('should create', () => {
-//     expect(component).toBeTruthy();
 //   });
 //
 //   it(`should have title ${HEROES[0].name} Details`, async () => {
@@ -1719,6 +1728,8 @@ describe('HeroesComponent: init', () => {
 ```
 
 Note: We have commented the above code block to keep it clear for presentation. In practice we can just use the `xdiscribe` to ignore the last two describe blockes from test execution.
+
+
 
   > The more smaller units of an application being unit testes, the more the integration points of our 
   > application will be missed by the unit test. Hence, we need more integration testes, such as e2e tests.

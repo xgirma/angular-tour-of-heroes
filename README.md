@@ -1265,4 +1265,6 @@ export class HeroesComponent implements OnInit {
 + </div>
 ```
 
-After this change almost all of the test should fail.
+After this change almost all of the test for `HeroesComponent` should fail. Tests for `AppComponent` should work as before. 
+Below we will update the unit- and e2e-tests to adapt this change. 
+

@@ -1091,3 +1091,26 @@ describe('HeroesComponent: input', () => {
   });
 });
 ```
+Notice how the above test uses a separate describe block, because the two-way binding test will change the `component.hero.name` property. 
+
+### :cat: unit test: result: heroes.component.spec.ts
+```text
+17 11 2019 21:43:39.565:INFO [Chrome 78.0.3904 (Mac OS X 10.15.1)]: 
+Connected on socket SPvsaEf-8W7L0e2JAAAA with id 61592508
+
+  HeroesComponent: input
+    ✓ should have editable hero name
+
+  HeroesComponent
+    ✓ should create
+    ✓ should have hero title
+    ✓ should have hero id
+
+  AppComponent
+    ✓ should have app-heroes
+    ✓ should have as title 'Tour of Heroes'
+    ✓ should create the app
+
+Chrome 78.0.3904 (Mac OS X 10.15.1): Executed 7 of 7 SUCCESS (0.306 secs / 0.27 secs)
+TOTAL: 7 SUCCESS
+```

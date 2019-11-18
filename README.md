@@ -669,9 +669,8 @@ describe('AppHeroes', () => {
   });
 });
 ```
-
-### :dog: e2e test: reult: app.e2e-spec.ts, heroes.e2e-spec.ts
 Test excution result
+### :dog: e2e test: reult: app.e2e-spec.ts, heroes.e2e-spec.ts
 ```text
 Jasmine started
 
@@ -687,4 +686,58 @@ Executed 2 of 2 specs SUCCESS in 1 sec.
 ```
 
 ## AppComponent(0.2), HeroesComponent(0.2)
-Here we want to display additional hero information, inaddition to name. See details [here](https://angular.io/tutorial/toh-pt1#create-a-hero-class)
+So far the app only shows the hero name. Here, we want to display additional hero information. See details [here](https://angular.io/tutorial/toh-pt1#create-a-hero-class)
+
+### :caw: component: heroes.component.ts
+```diff
+import { Component, OnInit } from '@angular/core';
+
++ import { Hero } from '../hero';
+
+@Component({
+  selector: 'app-heroes',
+  templateUrl: './heroes.component.html',
+  styleUrls: ['./heroes.component.css']
+})
+export class HeroesComponent implements OnInit {
+-  hero = 'Windstorm';
++  hero: Hero = {
++    id: 1,
++    name: 'Windstorm'
++  };
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+}
+```
+### :pig: view: heroes.component.html
+```diff
+- <p>{{hero}}</p>
++ <h2>{{hero.name | uppercase}} Details</h2>
++ <div><span>id: </span>{{hero.id}}</div>
++ <div><span>name: </span>{{hero.name}}</div>
+```
+After updating the code, as shown above both unit- and e2e-tests for the `HeroesComponent` fails for not finding the original hero content in the view.
+
+### :cat: unit test: result: heroes.component.spec.ts
+```text
+HeroesComponent
+    ✗ should have 'Windstorm' as hero
+        TypeError: Cannot read property 'textContent' of null
+            at <Jasmine>
+```
+
+### :dog: e2e test: result: heroes.e2e-spec.ts
+```text
+Jasmine started
+
+  AppComponent
+    ✓ should display title
+
+  AppHeroes
+    ✗ should have name 'Windstorm'
+      - Failed: No element found using locator: By(css selector, app-heroes > p)
+          at elementArray
+```

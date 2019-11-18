@@ -890,3 +890,204 @@ Executed 4 of 4 specs SUCCESS in 3 secs.
 All tests pass.
 
 ## AppComponent(0.2), HeroesComponent(0.3)
+Two-way data binding. We will add an input box to be able to edit the hero name. See details [here](https://angular.io/tutorial/toh-pt1#edit-the-hero)
+
+```diff
+<h2 id="dtl">{{hero.name | uppercase}} Details</h2>
+<div id="hro-id"><span>id: </span>{{hero.id}}</div>
+- <div id="hro-name"><span>name: </span>{{hero.name}}</div>
++ <div id="hro-name">
++  <label>name:
++    <input [(ngModel)]="hero.name" placeholder="name"/>
++  </label>
++ </div>
+```
+After the above change in the view, your application, unit- and e2e-test will fail for a good reason. Check your browser console to see why your application is failing to render the view. Below is an identical error message from the unit test.
+
+```text
+Failed: Template parse errors:
+Can't bind to 'ngModel' since it isn't a known property of 'input'. ("
+<div id="hro-name">
+  <label>name:
+    <input [ERROR ->][(ngModel)]="hero.name" placeholder="name"/>
+  </label>
+</div>
+"): ng:///DynamicTestModule/HeroesComponent.html@4:11
+```
+Add `FormsModule` in the `app.module.ts` as shown [here](https://angular.io/tutorial/toh-pt1#the-missing-formsmodule). We also need to add the same in the `heroes.componet.spec.ts` and its parent shell component test `app.component.spec.ts`.
+
+### :cat: unit test: heroes.component.spec.ts
+```diff
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
++ import { FormsModule } from '@angular/forms';
+
+import { HeroesComponent } from './heroes.component';
+
+describe('HeroesComponent', () => {
+  let component: HeroesComponent;
+  let fixture: ComponentFixture<HeroesComponent>;
+  let compiled: any;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
++     imports: [ FormsModule ],
+      declarations: [ HeroesComponent ]
+    })
+    .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(HeroesComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+    compiled = fixture.debugElement.nativeElement;
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it(`should have hero title`, () => {
+    expect(compiled.querySelector('#dtl').textContent)
+      .toEqual((component.hero.name).toUpperCase() + ' Details');
+  });
+
+  it(`should have hero id`, () => {
+    expect(compiled.querySelector('#hro-id').textContent)
+      .toEqual('id: ' + (component.hero.id));
+  });
+
+  it(`should have hero name`, () => {
+    expect(compiled.querySelector('#hro-name').textContent)
+      .toEqual('name: ' + (component.hero.name));
+  });
+});
+```
+
+### :cat: unit test: app.component.spec.ts
+```diff
+import { TestBed, async, ComponentFixture } from '@angular/core/testing';
++ import { FormsModule } from '@angular/forms';
+
+import { AppComponent } from './app.component';
+import { HeroesComponent } from './heroes/heroes.component';
+
+describe('AppComponent', () => {
+  let component: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
+  let compiled: any;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
++     imports: [ FormsModule ],
+      declarations: [
+        AppComponent,
+        HeroesComponent
+      ],
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+    compiled = fixture.debugElement.nativeElement;
+  });
+
+  it('should create the app', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it(`should have as title 'Tour of Heroes'`, () => {
+    expect(component.title).toEqual('Tour of Heroes');
+  });
+
+  it('should have app-heroes', () => {
+    expect(compiled.querySelector('app-heroes')).toBeDefined();
+  });
+});
+```
+
+At this point for both unit- and e2e-tests, only the single test for the name field should fail, since its actual markup is changed. We will update that test. 
+
+  > Unit tests run in random order. It is important that the change made in one test should be tear-down
+  > after each test run, when possible. Or a test that could potentially polute other test, shoul be keept
+  > in a separate describe block.
+  
+### :cat: unit test: heroes.component.spec.ts
+```typescript
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
+
+import { HeroesComponent } from './heroes.component';
+
+describe('HeroesComponent', () => {
+  let component: HeroesComponent;
+  let fixture: ComponentFixture<HeroesComponent>;
+  let compiled: any;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [ FormsModule ],
+      declarations: [ HeroesComponent ]
+    })
+    .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(HeroesComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+    compiled = fixture.debugElement.nativeElement;
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it(`should have hero title`, () => {
+    expect(compiled.querySelector('#dtl').textContent)
+      .toEqual((component.hero.name).toUpperCase() + ' Details');
+  });
+
+  it(`should have hero id`, () => {
+    expect(compiled.querySelector('#hro-id').textContent)
+      .toEqual('id: ' + (component.hero.id));
+  });
+});
+
+describe('HeroesComponent: input', () => {
+  let component: HeroesComponent;
+  let fixture: ComponentFixture<HeroesComponent>;
+  let compiled: any;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [ FormsModule ],
+      declarations: [ HeroesComponent ]
+    })
+      .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(HeroesComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+    compiled = fixture.debugElement.nativeElement;
+  });
+
+  it(`should have editable hero name`, () => {
+    const inputBox = fixture.debugElement.query(By.css('input')).nativeElement;
+    inputBox.value = 'Dr. Nice';
+    inputBox.dispatchEvent(new Event('input'));
+
+    expect(inputBox.value).toBe('Dr. Nice');
+    fixture.detectChanges();
+
+    // two way binding
+    expect(compiled.querySelector('#dtl').textContent)
+      .toEqual((component.hero.name).toUpperCase() + ' Details');
+  });
+});
+```

@@ -1201,3 +1201,67 @@ Jasmine started
 
 Executed 4 of 4 specs SUCCESS in 2 secs.
 ```
+
+## AppComponent(0.2), HeroesComponent(0.4)
+So far we have shown a single hero, now let us display a list of heroes. Able to edit only the `selected` hero. See details [here](https://angular.io/tutorial/toh-pt2)
+
+### :cat: unit test: heroes.component.spec.ts
+```diff
+import { Component, OnInit } from '@angular/core';
+
+import { Hero } from '../hero';
++ import { HEROES } from '../mock-heroes';
+
+@Component({
+  selector: 'app-heroes',
+  templateUrl: './heroes.component.html',
+  styleUrls: ['./heroes.component.css']
+})
+export class HeroesComponent implements OnInit {
+-  hero: Hero = {
+-    id: 1,
+-    name: 'Windstorm'
+-  };
+
+-  heroes = HEROES;
++  selectedHero: Hero;
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+
++  onSelect(hero: Hero): void {
++    this.selectedHero = hero;
++  }
+}
+```
+
+### :pig: view: heroes.component.html
+```diff
+- <h2 id="dtl">{{hero.name | uppercase}} Details</h2>
+- <div id="hro-id"><span>id: </span>{{hero.id}}</div>
+- <div id="hro-name">
+-  <label>name:
+-    <input [(ngModel)]="hero.name" placeholder="name"/>
+-  </label>
+- </div>
+
++ <h2>My Heroes</h2>
++ <ul class="heroes">
++  <li *ngFor="let hero of heroes" (click)="onSelect(hero)">
++    <span class="badge">{{hero.id}}</span> {{hero.name}}
++  </li>
++ </ul>
+
++ <div *ngIf="selectedHero">
++  <h2>{{selectedHero.name | uppercase}} Details</h2>
++  <div><span>id: </span>{{selectedHero.id}}</div>
++  <div>
++    <label>name:
++      <input [(ngModel)]="selectedHero.name" placeholder="name"/>
++    </label>
++  </div>
++ </div>
+```
+

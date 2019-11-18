@@ -532,3 +532,90 @@ TOTAL: 4 SUCCESS
 ```
 
 As shown above, the `HeroesComponent` have one default test and it is passing. We need to add one more test to 'hero' bing rendered. 
+
+```diff
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { HeroesComponent } from './heroes.component';
+
+describe('HeroesComponent', () => {
+  let component: HeroesComponent;
+  let fixture: ComponentFixture<HeroesComponent>;
++  let compiled: any;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ HeroesComponent ]
+    })
+    .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(HeroesComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+ +   compiled = fixture.debugElement.nativeElement;
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
++  it(`should have 'Windstorm' as hero`, () => {
++    expect(compiled.querySelector('app-heroes').textContent).toEqual(component.hero);
++  });
+});
+```
+
+When we run the test, the test will fail, because the `querySelector` could not find the element.
+```text
+1) should have 'Windstorm' as hero
+     HeroesComponent
+     TypeError: Cannot read property 'textContent' of null
+    at <Jasmine>
+```
+
+We need to add a Paragraph HTML tag to the content we want to search for. 
+
+  > Oftten we need to update a working application code to make it testable. Adding `IDs, class-names,`
+  > or `HTML tags` are common practice. 
+  
+```diff
+- {{hero}}
++ <p>{{hero}}</p>
+```
+Updated test with `compiled.querySelector('p')` help us to find the element, hence the assertion passes. 
+
+```typescript
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { HeroesComponent } from './heroes.component';
+
+describe('HeroesComponent', () => {
+  let component: HeroesComponent;
+  let fixture: ComponentFixture<HeroesComponent>;
+  let compiled: any;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ HeroesComponent ]
+    })
+    .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(HeroesComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+    compiled = fixture.debugElement.nativeElement;
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it(`should have 'Windstorm' as hero`, () => {
+    expect(compiled.querySelector('p').textContent).toEqual(component.hero);
+  });
+});
+```

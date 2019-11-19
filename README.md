@@ -1974,6 +1974,33 @@ We are not able to click on the list and assert the details of the clicked list 
 because now the two components are separate. Hence, that part of the commented unit test will be 
 discarded.  
 
+### :cat: unit test: hero-detail.component.spec.ts
+```text
+18 11 2019 21:54:29.966:INFO [Chrome 78.0.3904 (Mac OS X 10.15.1)]: Connected on socket W0rmtCeFgvlthm6tAAAA with id 91122346
+
+  HeroDetailComponent
+    ✓ should have id 20
+    ✓ should create
+    ✓ should have text 'Tornado' in the input
+    ✓ should have title Tornado Details
+    ✓ input should accept new value
+
+  HeroesComponent: init
+    ✓ should have a list of heroes
+    ✓ should create
+    ✓ should have heroes
+    ✓ should not have selected hero
+
+  AppComponent
+    ✓ should have as title 'Tour of Heroes'
+    ✓ should create the app
+    ✓ should have app-heroes
+TOTAL: 12 SUCCESS
+
+Chrome 78.0.3904 (Mac OS X 10.15.1): Executed 12 of 12 SUCCESS (0.536 secs / 0.489 secs)
+TOTAL: 12 SUCCESS
+```
+
   > The more smaller units of an application being unit testes, the more the integration points of our 
   > application will be missed by the unit test. Hence, we need more integration testes, such as e2e tests.
 

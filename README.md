@@ -1552,8 +1552,175 @@ Second, we will build the `HeroDetailComponent` tests, by `re-using` the comment
 Note that which of the commented tests could be-reused, and which we have to descard, and which new tests we need introduce to test `HeroDetailComponent`. The part that we are going to descard needs to be tested with e2e tests.
 
 ### :pig: view: heroes.component.html
-```diff
+```html
+<h2>My Heroes</h2>
+<ul class="heroes">
+  <li *ngFor="let hero of heroes"
+      [class.selected]="hero === selectedHero"
+      (click)="onSelect(hero) ">
+    <span class="badge">{{hero.id}}</span> {{hero.name}}
+  </li>
+</ul>
 
+<app-hero-detail [hero]="selectedHero"></app-hero-detail>
+```
+
+### :caw: component: hero-detail.component.ts
+```javascript
+import { Component, OnInit, Input } from '@angular/core';
+
+import { Hero } from '../hero';
+
+@Component({
+  selector: 'app-hero-detail',
+  templateUrl: './hero-detail.component.html',
+  styleUrls: ['./hero-detail.component.css']
+})
+export class HeroDetailComponent implements OnInit {
+  @Input() hero: Hero;
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+}
+```
+
+After adding the `HeroDetailComponent` component, if we run the unit test, tests of `AppComponent` and `HeroesComponent` will start failing. 
+
+### :cat: unit test: heroes.component.spec.ts, app.component.spec.ts
+```text
+Failed: Template parse errors:
+Can't bind to 'hero' since it isn't a known property of 'app-hero-detail'.
+1. If 'app-hero-detail' is an Angular component and it has 'hero' input, then verify that it is part of this module.
+2. If 'app-hero-detail' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+3. To allow any property add 'NO_ERRORS_SCHEMA' to the '@NgModule.schemas' of this component. ("
+</ul>
+
+<app-hero-detail [ERROR ->][hero]="selectedHero"></app-hero-detail>
+```
+
+Solution, We just need to declare the `HeroDetailComponent` in the `app.component.spec.ts` and `heroes.component.spec.ts`. 
+Below is an example for the `app.component.spec.ts` spec. You do the same for `heroes.component.spec.ts`.
+
+### :cat: unit test: app.component.spec
+```typescript
+import {TestBed, async, ComponentFixture} from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { FormsModule } from '@angular/forms';
+
+import { AppComponent } from './app.component';
+import { HeroesComponent } from './heroes/heroes.component';
+import { HeroDetailComponent } from './hero-detail/hero-detail.component';
+
+describe('AppComponent', () => {
+  let component: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
+  let compiled: any;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule,
+        FormsModule
+      ],
+      declarations: [
+        AppComponent,
+        HeroesComponent,
+        HeroDetailComponent
+      ],
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+    compiled = fixture.debugElement.nativeElement;
+  });
+
+  it('should create the app', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it(`should have as title 'Tour of Heroes'`, () => {
+    expect(component.title).toEqual('Tour of Heroes');
+  });
+
+  it('should have app-heroes', () => {
+    expect(compiled.querySelector('app-heroes')).toBeDefined();
+  });
+});
+```
+
+Now we have one last error to fix, `hero-detail.component.spec.ts` needs `ngModel`.
+
+### :cat: unit test: error: hero-detail.component.spec.ts
+```text
+Failed: Template parse errors:
+Can't bind to 'ngModel' since it isn't a known property of 'input'. ("
+    <div id="hro-name">
+      <label>name:
+        <input [ERROR ->][(ngModel)]="hero.name" placeholder="name" name="name"/>
+      </label>
+    </div>
+"): ng:///DynamicTestModule/HeroDetailComponent.html@6:15
+```
+
+Add the `FormsModule` to the `HeroDetailComponent` component. Also make sure y 
+
+### :cat: unit test: hero-detail.component.spec.ts
+```typescript
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
+
+import { HeroDetailComponent } from './hero-detail.component';
+
+describe('HeroDetailComponent', () => {
+  let component: HeroDetailComponent;
+  let fixture: ComponentFixture<HeroDetailComponent>;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [ FormsModule ],
+      declarations: [ HeroDetailComponent ]
+    })
+    .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(HeroDetailComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
+```
+
+### :cat: unit test: result: app.component.spec.ts, heroes.component.spec.ts, hero-detail.component.spec.ts
+```text
+18 11 2019 21:16:20.990:INFO [Chrome 78.0.3904 (Mac OS X 10.15.1)]: Connected on socket 1isdMMnOt_ZH72g9AAAA with id 17808333
+
+  HeroesComponent: init
+    ✓ should create
+    ✓ should not have selected hero
+    ✓ should have a list of heroes
+    ✓ should have heroes
+
+  HeroDetailComponent
+    ✓ should create
+
+  AppComponent
+    ✓ should have as title 'Tour of Heroes'
+    ✓ should create the app
+    ✓ should have app-heroes
+TOTAL: 8 SUCCESS
+
+Chrome 78.0.3904 (Mac OS X 10.15.1): Executed 8 of 8 SUCCESS (0.774 secs / 0.692 secs)
+TOTAL: 8 SUCCESS
 ```
 
   > The more smaller units of an application being unit testes, the more the integration points of our 

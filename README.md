@@ -688,7 +688,7 @@ Executed 2 of 2 specs SUCCESS in 1 sec.
 ## AppComponent(0.2), HeroesComponent(0.2)
 So far the app only shows the hero name. Here, we want to display additional hero information. See details [here](https://angular.io/tutorial/toh-pt1#create-a-hero-class)
 
-### :caw: component: heroes.component.ts
+### :cow: component: heroes.component.ts
 ```diff
 import { Component, OnInit } from '@angular/core';
 

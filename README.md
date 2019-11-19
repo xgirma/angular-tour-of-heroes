@@ -1901,6 +1901,79 @@ Chrome 78.0.3904 (Mac OS X 10.15.1): Executed 8 of 8 SUCCESS (0.774 secs / 0.692
 TOTAL: 8 SUCCESS
 ```
 
+The good thing is the master/detail split did not affect the integration test. 
+The e2e tests are passing as before, so no update or modification is needed.
+
+However, we do not have enough unit test coverage for the `HeroDetailComponent` and let us do that.
+
+### :cat: unit test : hero-detail.component.spec.ts
+```typescript
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
+
+import { HeroDetailComponent } from './hero-detail.component';
+
+describe('HeroDetailComponent', () => {
+  let component: HeroDetailComponent;
+  let fixture: ComponentFixture<HeroDetailComponent>;
+  let compiled: any;
+  const hero = { id: 20, name: 'Tornado' };
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [ FormsModule ],
+      declarations: [ HeroDetailComponent ]
+    })
+    .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(HeroDetailComponent);
+    component = fixture.componentInstance;
+    component.hero = hero;
+    fixture.detectChanges();
+    compiled = fixture.debugElement.nativeElement;
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it(`should have title ${hero.name} Details`, () => {
+    expect(compiled.querySelector('#dtl').textContent)
+      .toEqual(`${(hero.name).toUpperCase()} Details`);
+  });
+
+  it(`should have id ${hero.id}`, async () => {
+    expect(compiled.querySelector('#hro-id').textContent)
+      .toEqual(`id: ${hero.id}`);
+  });
+
+  it(`should have text '${hero.name}' in the input`, async () => {
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const inputBox = fixture.debugElement.query(By.css('input')).nativeElement;
+    expect(inputBox.value).toEqual(hero.name);
+  });
+
+  it('input should accept new value', async () => {
+    const inputBox = fixture.debugElement.query(By.css('input')).nativeElement;
+    inputBox.value = 'Foo';
+    inputBox.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+
+    expect(inputBox.value).toBe('Foo');
+    expect(compiled.querySelector('#dtl').textContent)
+      .toEqual(`${(hero.name).toUpperCase()} Details`);
+  });
+});
+```
+We are not able to click on the list and assert the details of the clicked list displayed correctly, 
+because now the two components are separate. Hence, that part of the commented unit test will be 
+discarded.  
+
   > The more smaller units of an application being unit testes, the more the integration points of our 
   > application will be missed by the unit test. Hence, we need more integration testes, such as e2e tests.
 

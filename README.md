@@ -1976,7 +1976,8 @@ discarded.
 
 ### :cat: unit test: hero-detail.component.spec.ts
 ```text
-18 11 2019 21:54:29.966:INFO [Chrome 78.0.3904 (Mac OS X 10.15.1)]: Connected on socket W0rmtCeFgvlthm6tAAAA with id 91122346
+18 11 2019 21:54:29.966:INFO [Chrome 78.0.3904 (Mac OS X 10.15.1)]: 
+Connected on socket W0rmtCeFgvlthm6tAAAA with id 91122346
 
   HeroDetailComponent
     ✓ should have id 20

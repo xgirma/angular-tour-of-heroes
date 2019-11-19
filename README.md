@@ -1276,7 +1276,7 @@ We will classify the unit test for the `HeroComponent` in to three parts:
   2. the state we get details after we select a hero
   3. the state we get when we modify a selected hero
   
-### :cat: unit test: heroes.component.spec.ts (part 1)
+### :cat: unit test: heroes.component.spec.ts
 ```typescript
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
@@ -1312,6 +1312,13 @@ describe('HeroesComponent: init', () => {
 
   it('should have heroes', () => {
     expect(component.heroes).toBeDefined();
+  });
+  
+  it('should have a list of heroes', async () => {
+    HEROES.forEach( (hero, index) => {
+      expect(compiled.querySelector(`ul > li:nth-child(${index + 1})`).textContent)
+        .toContain(hero.name);
+    });
   });
 
   it('should not have selected hero', () => {
@@ -1435,7 +1442,6 @@ Connected on socket 6y91viPShxMH-04mAAAA with id 51344877
 
   HeroesComponent: select
     ✓ should have id 11
-    ✓ should create
     ✓ should have title Dr Nice Details
     ✓ should have text 'Dr Nice' in the input
 
@@ -1550,6 +1556,178 @@ Second, we will build the `HeroDetailComponent` tests, by `re-using` the comment
   > loose the ablility of testing our application integration point using unit test.
 
 Note that which of the commented tests could be-reused, and which we have to descard, and which new tests we need introduce to test `HeroDetailComponent`. The part that we are going to descard needs to be tested with e2e tests.
+
+### :pig: view: heroes.component.html
+```diff
+<h2>My Heroes</h2>
+<ul class="heroes">
+  <li *ngFor="let hero of heroes"
+      [class.selected]="hero === selectedHero"
+      (click)="onSelect(hero) ">
+    <span class="badge">{{hero.id}}</span> {{hero.name}}
+  </li>
+</ul>
+
+- <div *ngIf="selectedHero" id="details">
+-  <h2 id="dtl">{{selectedHero.name | uppercase}} Details</h2>
+-  <div id="hro-id"><span>id: </span>{{selectedHero.id}}</div>
+-  <div id="hro-name">
+-    <label>name:
+-      <input [(ngModel)]="selectedHero.name" placeholder="name" name="name"/>
+-    </label>
+-  </div>
+- </div>
+```
+
+### :cat: unit test: heroes.component.spec
+```typescript
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
+
+import { HeroesComponent } from './heroes.component';
+import { HEROES } from '../mock-heroes';
+
+describe('HeroesComponent: init', () => {
+  let component: HeroesComponent;
+  let fixture: ComponentFixture<HeroesComponent>;
+  let compiled: any;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [ FormsModule ],
+      declarations: [ HeroesComponent ]
+    })
+      .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(HeroesComponent);
+    component = fixture.componentInstance;
+    component.heroes = HEROES;
+    fixture.detectChanges();
+    compiled = fixture.debugElement.nativeElement;
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('should have heroes', () => {
+    expect(component.selectedHero).not.toBeDefined();
+  });
+  
+  it('should have a list of heroes', async () => {
+    HEROES.forEach( (hero, index) => {
+      expect(compiled.querySelector(`ul > li:nth-child(${index + 1})`).textContent)
+        .toContain(hero.name);
+    });
+  });
+
+  it('should not have selected hero', () => {
+    expect(component.heroes).toBeDefined();
+    expect(compiled.querySelector('#details')).toBe(null);
+  });
+});
+
+// xdescribe('HeroesComponent: select', () => {
+//   let component: HeroesComponent;
+//   let fixture: ComponentFixture<HeroesComponent>;
+//   let compiled: any;
+//
+//   beforeEach(async(() => {
+//     TestBed.configureTestingModule({
+//       imports: [ FormsModule ],
+//       declarations: [ HeroesComponent ]
+//     })
+//       .compileComponents();
+//   }));
+//
+//   beforeEach(() => {
+//     fixture = TestBed.createComponent(HeroesComponent);
+//     component = fixture.componentInstance;
+//     component.heroes = HEROES;
+//     fixture.detectChanges();
+//     compiled = fixture.debugElement.nativeElement;
+//   });
+//
+//   it(`should have title ${HEROES[0].name} Details`, async () => {
+//     const myHero = fixture.debugElement.queryAll(By.css('.badge'));
+//     myHero[0].nativeElement.click();
+//     fixture.detectChanges();
+//     await fixture.whenStable();
+//
+//     expect(component.selectedHero).toBeDefined();
+//     expect(compiled.querySelector('#dtl').textContent)
+//       .toEqual(`${(HEROES[0].name).toUpperCase()} Details`);
+//   });
+//
+//   it(`should have id ${HEROES[0].id}`, async () => {
+//     const myHero = fixture.debugElement.queryAll(By.css('.badge'));
+//     myHero[0].nativeElement.click();
+//     fixture.detectChanges();
+//     await fixture.whenStable();
+//
+//     expect(component.selectedHero).toBeDefined();
+//     expect(compiled.querySelector('#hro-id').textContent)
+//       .toEqual(`id: ${HEROES[0].id}`);
+//   });
+//
+//   it(`should have text '${HEROES[0].name}' in the input`, async () => {
+//     const myHero = fixture.debugElement.queryAll(By.css('.badge'));
+//     myHero[0].nativeElement.click();
+//     fixture.detectChanges();
+//     await fixture.whenStable();
+//
+//     expect(component.selectedHero).toBeDefined();
+//     const inputBox = fixture.debugElement.query(By.css('input')).nativeElement;
+//     expect(inputBox.value).toEqual(HEROES[0].name);
+//   });
+// });
+
+// xdescribe('HeroesComponent: input', () => {
+//   let component: HeroesComponent;
+//   let fixture: ComponentFixture<HeroesComponent>;
+//   let compiled: any;
+//
+//   beforeEach(async(() => {
+//     TestBed.configureTestingModule({
+//       imports: [ FormsModule ],
+//       declarations: [ HeroesComponent ]
+//     })
+//       .compileComponents();
+//   }));
+//
+//   beforeEach(() => {
+//     fixture = TestBed.createComponent(HeroesComponent);
+//     component = fixture.componentInstance;
+//     component.heroes = HEROES;
+//     fixture.detectChanges();
+//     compiled = fixture.debugElement.nativeElement;
+//   });
+//
+//   it('input should accept new value', async () => {
+//     const myHero = fixture.debugElement.queryAll(By.css('.badge'));
+//     myHero[0].nativeElement.click();
+//     fixture.detectChanges();
+//     await fixture.whenStable();
+//
+//     const inputBox = fixture.debugElement.query(By.css('input')).nativeElement;
+//     inputBox.value = 'Foo';
+//     inputBox.dispatchEvent(new Event('input'));
+//     expect(inputBox.value).toBe('Foo');
+//     fixture.detectChanges();
+//
+//     expect(component.selectedHero).toBeDefined();
+//     expect(compiled.querySelector('#dtl').textContent)
+//       .toEqual(`${(HEROES[0].name).toUpperCase()} Details`);
+//
+//     expect(compiled.querySelector('li.selected').textContent).toContain('Foo');
+//   });
+// });
+```
+
+Note: We have commented the above code block to keep it clear for presentation. In practice we can just use the `xdiscribe` to ignore the last two describe blockes from test execution.
 
 ### :pig: view: heroes.component.html
 ```html
@@ -1725,3 +1903,4 @@ TOTAL: 8 SUCCESS
 
   > The more smaller units of an application being unit testes, the more the integration points of our 
   > application will be missed by the unit test. Hence, we need more integration testes, such as e2e tests.
+

@@ -24,5 +24,7 @@ jobs:
         npm run lint
         npm run start &
         npm test -- --watch false --browsers ChromeHeadless
+        npm run e2e:update-webdriver
+        npm run e2e:travis
       env:
         CI: true

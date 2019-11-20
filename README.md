@@ -2071,4 +2071,78 @@ export class HeroesComponent implements OnInit {
 ```
 
 After all these changes both unit- and e2e-tests are passing. We will add new tests to the `HeroService`.
+We will add a class name for the list of heroes. 
 
+### :pig: view: heroes.component.html
+```diff
+<h2>My Heroes</h2>
+<ul class="heroes">
+  <li *ngFor="let hero of heroes"
+      [class.selected]="hero === selectedHero"
+      (click)="onSelect(hero) "
++      class="hero">
+    <span class="badge">{{hero.id}}</span> {{hero.name}}
+  </li>
+</ul>
+<app-hero-detail [hero]="selectedHero"></app-hero-detail>
+```
+
+### :cat: unit tes: heroes.component.ts
+```typescript
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
+
+import { HeroesComponent } from './heroes.component';
+import { HeroDetailComponent } from '../hero-detail/hero-detail.component';
+import { HeroService } from '../hero.service';
+import { HEROES } from '../mock-heroes';
+import { defer } from 'rxjs';
+
+// ...
+
+export function fakeAsyncResponse<T>(data: T) {
+  return defer(() => Promise.resolve(data));
+}
+
+const heroServiceStub = {
+  getHeroes() {
+    return fakeAsyncResponse([
+      { id: 15, name: 'Magneta' },
+      { id: 16, name: 'RubberMan' }
+    ]);
+  }
+};
+
+describe('data: hero.service',  () => {
+  let component: HeroesComponent;
+  let fixture: ComponentFixture<HeroesComponent>;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [ FormsModule ],
+      declarations: [
+        HeroesComponent,
+        HeroDetailComponent
+      ],
+      providers: [{provide: HeroService, useValue: heroServiceStub}]
+    })
+      .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(HeroesComponent);
+    component = fixture.componentInstance;
+    component.heroes = HEROES;
+    fixture.detectChanges();
+  });
+
+  it('should have two heroes', async () => {
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const heroes = fixture.debugElement.queryAll(By.css('.hero'));
+    expect(heroes.length).toEqual(2);
+  });
+});
+```

@@ -2087,7 +2087,7 @@ We will add a class name for the list of heroes.
 <app-hero-detail [hero]="selectedHero"></app-hero-detail>
 ```
 
-### :cat: unit tes: heroes.component.ts
+### :cat: unit test: heroes.component.ts
 ```typescript
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';

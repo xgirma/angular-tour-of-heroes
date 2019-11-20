@@ -8,7 +8,7 @@ export class AppHeroes {
   selected = element(by.css('li.selected'));
 
   navigateTo() {
-    browser.get(browser.baseUrl);
+    browser.get(browser.baseUrl + 'heroes');
     return browser.wait(EC.presenceOf(this.body), 5000) as Promise< void>;
   }
 

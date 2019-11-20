@@ -2205,3 +2205,91 @@ describe('HeroService', () => {
   }));
 });
 ```
+
+## AppComponent(0.3), HeroesComponent(0.5), HeroDetailComponent(0.1), HeroService(0.1)
+At this point we will move from using the `AppComponent` as a shell to introducing a 
+formal router module. See details [here](https://angular.io/tutorial/toh-pt5#routing).
+
+### :zap: module: app-routing.module.ts
+```diff
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+
++ import { HeroesComponent } from './heroes/heroes.component';
+
+
+const routes: Routes = [
++  { path: 'heroes', component: HeroesComponent }
+];
+
+@NgModule({
+  imports: [ RouterModule.forRoot(routes) ],
+  exports: [ RouterModule ]
+})
+export class AppRoutingModule { }
+```
+
+### :cow: app.component.ts
+```diff
+<h1 id="title">{{title}}</h1>
++ <router-outlet></router-outlet>
+- <app-heroes></app-heroes>
+```
+
+After this change, if we run a unit test, all tests pass. When we run e2e tests, the tests will 
+start failing completely. Because of the route change.
+
+First, let us remove the un-used `HeroesComponent` from the `AppComponent` test.
+
+### :cat: app.component.spec.ts
+```diff
+import {TestBed, async, ComponentFixture} from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { FormsModule } from '@angular/forms';
+
+import { AppComponent } from './app.component';
+- import { HeroesComponent } from './heroes/heroes.component';
+- import { HeroDetailComponent } from './hero-detail/hero-detail.component';
+
+describe('AppComponent', () => {
+  let component: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
+  let compiled: any;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule,
+        FormsModule
+      ],
+      declarations: [
+        AppComponent,
+-        HeroesComponent,
+-        HeroDetailComponent
+      ],
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+    compiled = fixture.debugElement.nativeElement;
+  });
+
+  it('should create the app', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it(`should have as title 'Tour of Heroes'`, () => {
+    expect(component.title).toEqual('Tour of Heroes');
+  });
+
+  it('should have app-heroes', () => {
+    expect(compiled.querySelector('app-heroes')).toBeDefined();
+  });
+});
+```
+
+Second, let us fix the routing issue in our e2e tests. Adding a `heroes` to the base-url
+in the page-object of the heroes page test is enough.

@@ -1,4 +1,4 @@
-# :cat: :dog: Testing Angular Tour Of Heroes
+# :cat: :dog: Testing Angular Tour Of Heroes :pig: :cow: :ant:
 Exploring the process of the unit- and e2e-testing the Tour of Heroes application. 
 Focusing on the connection between application progression and test development changes.
 

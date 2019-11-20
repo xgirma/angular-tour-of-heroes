@@ -279,6 +279,42 @@ script:
   - npm run e2e:travis
 ```
 
+If you would like to use Github Actions as your CD, use the below configuration.
+
+### nodejs.yml
+```yaml
+name: Node CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x]
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: npm install, lint, unit test and e2e tests
+      run: |
+        npm install -g @angular/cli
+        npm install
+        npm run lint
+        npm run start &
+        npm test -- --watch false --browsers ChromeHeadless
+        npm run e2e:update-webdriver
+        npm run e2e:travis
+      env:
+        CI: true
+```
+
 ## AppComponent (v0.1)
 Our App begins here. First thing we change the title. See details [here](https://angular.io/tutorial/toh-pt0)
 

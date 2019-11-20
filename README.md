@@ -1880,7 +1880,8 @@ describe('HeroDetailComponent', () => {
 
 ### :cat: unit test: result: app.component.spec.ts, heroes.component.spec.ts, hero-detail.component.spec.ts
 ```text
-18 11 2019 21:16:20.990:INFO [Chrome 78.0.3904 (Mac OS X 10.15.1)]: Connected on socket 1isdMMnOt_ZH72g9AAAA with id 17808333
+18 11 2019 21:16:20.990:INFO [Chrome 78.0.3904 (Mac OS X 10.15.1)]: 
+Connected on socket 1isdMMnOt_ZH72g9AAAA with id 17808333
 
   HeroesComponent: init
     ✓ should create
@@ -2004,4 +2005,70 @@ TOTAL: 12 SUCCESS
 
   > The more smaller units of an application being unit testes, the more the integration points of our 
   > application will be missed by the unit test. Hence, we need more integration testes, such as e2e tests.
+
+## AppComponent(0.2), HeroesComponent(0.5), HeroDetailComponent(0.1), HeroService(0.1)
+Component shouldn't fetch or save data directly. We will get the data from `HeroService`. See details [here](https://angular.io/tutorial/toh-pt4).
+
+### :ant: service: hero.service.ts
+```typescript
+import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
+
+import { Hero } from './hero';
+import { HEROES } from './mock-heroes';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class HeroService {
+
+  constructor() { }
+
+  getHeroes(): Observable<Hero[]> {
+    return of(HEROES);
+  }
+}
+```
+
+### :cow: component: heroes.component.ts
+```diff
+import { Component, OnInit } from '@angular/core';
+
+import { Hero } from '../hero';
++ import { HeroService } from '../hero.service';
+
+@Component({
+  selector: 'app-heroes',
+  templateUrl: './heroes.component.html',
+  styleUrls: ['./heroes.component.css']
+})
+export class HeroesComponent implements OnInit {
+  heroes: Hero[];
+  selectedHero: Hero;
+
+  constructor(
+    private heroService: HeroService
+  ) { }
+
+  ngOnInit() {
+    this.getHeroes();
+  }
+
+  onSelect(hero) {
+    this.selectedHero = hero;
+  }
+
+- getHeroes(): void {
+-  this.heroes = this.heroService.getHeroes();
+- }
+
++ getHeroes(): void {
++  this.heroService.getHeroes().subscribe(
++     heroes => this.heroes = heroes
++   );
++ }
+}
+```
+
+After all these changes both unit- and e2e-tests are passing. We will add new tests to the `HeroService`.
 

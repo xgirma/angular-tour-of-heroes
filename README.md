@@ -2115,7 +2115,6 @@ const heroServiceStub = {
 };
 
 describe('data: hero.service',  () => {
-  let component: HeroesComponent;
   let fixture: ComponentFixture<HeroesComponent>;
 
   beforeEach(async(() => {
@@ -2125,15 +2124,16 @@ describe('data: hero.service',  () => {
         HeroesComponent,
         HeroDetailComponent
       ],
-      providers: [{provide: HeroService, useValue: heroServiceStub}]
+      providers: [{
+        provide: HeroService,
+        useValue: heroServiceStub
+      }]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HeroesComponent);
-    component = fixture.componentInstance;
-    component.heroes = HEROES;
     fixture.detectChanges();
   });
 

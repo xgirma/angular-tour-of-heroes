@@ -45,4 +45,9 @@ describe('AppComponent', () => {
   it('should have messaging', () => {
     expect(compiled.querySelector('app-messages')).toBeTruthy();
   });
+
+  it(`should have link to '/heroes'`, () => {
+    expect(compiled.querySelector('a').getAttribute('href'))
+      .toEqual('/heroes');
+  });
 });

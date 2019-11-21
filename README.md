@@ -2364,6 +2364,7 @@ export class AppRoutingModule { }
 <h1 id="title">{{title}}</h1>
 + <router-outlet></router-outlet>
 - <app-heroes></app-heroes>
+<app-messages></app-messages>
 ```
 
 After this change, if we run a unit test, all tests pass. When we run e2e tests, the tests will 
@@ -2463,4 +2464,74 @@ export class AppHeroes {
     return this.selected.getText() as Promise<string>;
   }
 }
+```
+
+## AppComponent(0.5)
+add a `routerLink` in the `AppComponent`.
+
+### :pig: view: app.component.html
+```diff
+<h1 id="title">{{title}}</h1>
++ <nav>
++  <a routerLink="/heroes">Heroes</a>
++ </nav>
+<router-outlet></router-outlet>
+<app-messages></app-messages>
+```
+
+### :cat: unit test: app.component.spec.ts
+```diff
+import {TestBed, async, ComponentFixture} from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { FormsModule } from '@angular/forms';
+
+import { AppComponent } from './app.component';
+import { MessagesComponent } from './messages/messages.component';
+
+describe('AppComponent', () => {
+  let component: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
+  let compiled: any;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule,
+        FormsModule
+      ],
+      declarations: [
+        AppComponent,
+        MessagesComponent
+      ],
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+    compiled = fixture.debugElement.nativeElement;
+  });
+
+  it('should create the app', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it(`should have as title 'Tour of Heroes'`, () => {
+    expect(component.title).toEqual('Tour of Heroes');
+  });
+
+  it('should have app-heroes', () => {
+    expect(compiled.querySelector('app-heroes')).toBeDefined();
+  });
+
+  it('should have messaging', () => {
+    expect(compiled.querySelector('app-messages')).toBeTruthy();
+  });
+
++  it(`should have link to '/heroes'`, () => {
++    expect(compiled.querySelector('a').getAttribute('href'))
++      .toEqual('/heroes');
++  });
+});
 ```

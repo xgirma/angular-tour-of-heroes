@@ -2206,7 +2206,85 @@ describe('HeroService', () => {
 });
 ```
 
-## AppComponent(0.3), HeroesComponent(0.5), HeroDetailComponent(0.1), HeroService(0.1)
+## AppComponent(0.3), HeroesComponent(0.5), HeroService(0.2), MessagesComponent(0.1), MessageService(0.1), 
+Adding a `MessagesComponent` to display message at the bottom. See details [here](https://angular.io/tutorial/toh-pt4#show-messages)
+
+### :pig: view : app.component.html
+```diff
+<h1 id="title">{{title}}</h1>
+<router-outlet></router-outlet>
+++ <app-messages></app-messages>
+```
+
+### :cat: unit test: error : app.component.spec.ts
+```text
+Failed: Template parse errors:
+'app-messages' is not a known element:
+1. If 'app-messages' is an Angular component, then verify that it is part of this module.
+2. If 'app-messages' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message. ("<h1 id="title">{{title}}</h1>
+<router-outlet></router-outlet>
+[ERROR ->]<app-messages></app-messages>
+```
+
+The addition of the `MessagesComponent`makes the unit test to fail. Let us add 
+the `MessagesComponent` inside the `app.component.spec.ts` to fix and also add one more test.
+
+### :cat: unit test: app.component.spec.ts
+```diff
+import {TestBed, async, ComponentFixture} from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { FormsModule } from '@angular/forms';
+
+import { AppComponent } from './app.component';
++ import { MessagesComponent } from './messages/messages.component';
+
+describe('AppComponent', () => {
+  let component: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
+  let compiled: any;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule,
+        FormsModule
+      ],
+      declarations: [
+        AppComponent,
++        MessagesComponent
+      ],
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+    compiled = fixture.debugElement.nativeElement;
+  });
+
+  it('should create the app', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it(`should have as title 'Tour of Heroes'`, () => {
+    expect(component.title).toEqual('Tour of Heroes');
+  });
+
+  it('should have app-heroes', () => {
+    expect(compiled.querySelector('app-heroes')).toBeDefined();
+  });
+
++  it('should have messaging', () => {
++    expect(compiled.querySelector('app-messages')).toBeTruthy();
++  });
+});
+```
+
+
+TODO: Update the numbering 
+
+## AppComponent(0.4), HeroesComponent(0.6), HeroDetailComponent(0.1), HeroService(0.3)
 At this point we will move from using the `AppComponent` as a shell to introducing a 
 formal router module. See details [here](https://angular.io/tutorial/toh-pt5#routing).
 

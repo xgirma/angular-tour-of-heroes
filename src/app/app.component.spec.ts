@@ -1,6 +1,7 @@
 import {TestBed, async, ComponentFixture} from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { MessagesComponent } from './messages/messages.component';
@@ -46,8 +47,15 @@ describe('AppComponent', () => {
     expect(compiled.querySelector('app-messages')).toBeTruthy();
   });
 
+  it(`should have link to '/dashboard'`, () => {
+    const links = fixture.debugElement.queryAll(By.css(`a`));
+    expect(links[0].nativeElement.getAttribute('href'))
+      .toEqual('/dashboard');
+  });
+
   it(`should have link to '/heroes'`, () => {
-    expect(compiled.querySelector('a').getAttribute('href'))
+    const links = fixture.debugElement.queryAll(By.css(`a`));
+    expect(links[1].nativeElement.getAttribute('href'))
       .toEqual('/heroes');
   });
 });

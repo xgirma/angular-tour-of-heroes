@@ -2536,7 +2536,7 @@ describe('AppComponent', () => {
 });
 ```
 
-## DashboardComponent(0.1)
+## DashboardComponent(0.1), AppComponent(0.6)
 Let us have more than one view. For details see [here](https://angular.io/tutorial/toh-pt5#add-a-dashboard-view)
 
 ### :pig: view: dashboard.component.html
@@ -2592,6 +2592,96 @@ describe('DashboardComponent', () => {
     component.heroes.forEach( (hero, index) => {
       expect(heroes[index].nativeElement.textContent).toContain(hero.name);
     });
+  });
+});
+```
+Adding a dashboard `routerLink` in the application shell breaks the `AppComponent` test.
+
+### :pig: view: app.component.html
+```diff
+<h1 id="title">{{title}}</h1>
+<nav>
+  <a routerLink="/dashboard">Dashboard</a>
+  <a routerLink="/heroes">Heroes</a>
+</nav>
+<router-outlet></router-outlet>
+<app-messages></app-messages>
+``` 
+
+### :cat: unit test: error: app.component.spec.ts
+```text
+Error: Expected '/dashboard' to equal '/heroes'.
+    at <Jasmine>
+    at UserContext.<anonymous> (http://localhost:9876/_karma_webpack_/src/app/app.component.spec.ts:51:8)
+    at ZoneDelegate.invoke (http://localhost:9876/_karma_webpack_/node_modules/zone.js/dist/zone-evergreen.js:365:1)
+    at ProxyZoneSpec.onInvoke (http://localhost:9876/_karma_webpack_/node_modules/zone.js/dist/zone-testing.js:305:1)
+```
+
+Let us fix this error, by refactoring the test for `AppComponet`.
+
+### :cat: unit test: app.component.spec.ts
+```diff
+import {TestBed, async, ComponentFixture} from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { FormsModule } from '@angular/forms';
++ import { By } from '@angular/platform-browser';
+
+import { AppComponent } from './app.component';
+import { MessagesComponent } from './messages/messages.component';
+
+describe('AppComponent', () => {
+  let component: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
+  let compiled: any;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule,
+        FormsModule
+      ],
+      declarations: [
+        AppComponent,
+        MessagesComponent
+      ],
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+    compiled = fixture.debugElement.nativeElement;
+  });
+
+  it('should create the app', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it(`should have as title 'Tour of Heroes'`, () => {
+    expect(component.title).toEqual('Tour of Heroes');
+  });
+
+  it('should have app-heroes', () => {
+    expect(compiled.querySelector('app-heroes')).toBeDefined();
+  });
+
+  it('should have messaging', () => {
+    expect(compiled.querySelector('app-messages')).toBeTruthy();
+  });
+
++  it(`should have link to '/dashboard'`, () => {
++    const links = fixture.debugElement.queryAll(By.css(`a`));
++    expect(links[0].nativeElement.getAttribute('href'))
++      .toEqual('/dashboard');
++  });
+
+  it(`should have link to '/heroes'`, () => {
+-    expect(compiled.querySelector('a').getAttribute('href'))
+-      .toEqual('/heroes');
++    const links = fixture.debugElement.queryAll(By.css(`a`));
++    expect(links[1].nativeElement.getAttribute('href'))
++      .toEqual('/heroes');
   });
 });
 ```

@@ -2601,7 +2601,7 @@ Adding a dashboard `routerLink` in the application shell breaks the `AppComponen
 ```diff
 <h1 id="title">{{title}}</h1>
 <nav>
-  <a routerLink="/dashboard">Dashboard</a>
++  <a routerLink="/dashboard">Dashboard</a>
   <a routerLink="/heroes">Heroes</a>
 </nav>
 <router-outlet></router-outlet>

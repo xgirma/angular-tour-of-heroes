@@ -2826,3 +2826,31 @@ describe('DashboardComponent', () => {
 });
 ```
 
+Remove `HeroesComponent hero links` 
+
+### :pig: view: heroes.component.html
+```diff
+<ul class="heroes">
+-  <li *ngFor="let hero of heroes"
+-    [class.selected]="hero === selectedHero"
+-    (click)="onSelect(hero)">
++    <a routerLink="/detail/{{hero.id}}">
+       <span class="badge">{{hero.id}}</span> {{hero.name}}
++    </a>
+  </li>
+</ul>
+```
+
+Failing test after the new addition due to missing 
+
+### :cat: unit test: heroes.component.spec.ts
+```text
+Failed: Template parse errors:
+Can't bind to 'routerLink' since it isn't a known property of 'a'. ("<ul class="heroes">
+  <li *ngFor="let hero of heroes">
+    <a [ERROR ->]routerLink="/detail/{{hero.id}}">
+      <span class="badge">{{hero.id}}</span> {{hero.name}}
+    </a>"): ng:///DynamicTestModule/HeroesComponent.html@2:7
+```
+
+Add the `RouterTestingModule` to  the `heroes.component.spec.ts`.

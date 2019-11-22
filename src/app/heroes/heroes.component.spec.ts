@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { HeroesComponent } from './heroes.component';
 import { HeroDetailComponent } from '../hero-detail/hero-detail.component';
@@ -15,7 +16,10 @@ describe('HeroesComponent: init', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ FormsModule ],
+      imports: [
+        FormsModule,
+        RouterTestingModule
+      ],
       declarations: [
         HeroesComponent,
         HeroDetailComponent
@@ -51,6 +55,13 @@ describe('HeroesComponent: init', () => {
     expect(component.selectedHero).not.toBeDefined();
     expect(compiled.querySelector('#details')).toBe(null);
   });
+
+  it('should have hero id and name', () => {
+    const heroes = fixture.debugElement.queryAll(By.css(`a`));
+    HEROES.forEach((hero, index) => {
+      expect(heroes[index].nativeElement.textContent).toContain(`${hero.id} ${hero.name}`);
+    });
+  });
 });
 
 export function fakeAsyncResponse<T>(data: T) {
@@ -71,7 +82,10 @@ describe('HeroesComponent: data: hero.service',  () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ FormsModule ],
+      imports: [
+        FormsModule,
+        RouterTestingModule
+      ],
       declarations: [
         HeroesComponent,
         HeroDetailComponent

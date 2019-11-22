@@ -52,7 +52,6 @@ describe('HeroesComponent: init', () => {
   });
 
   it('should not have selected hero', () => {
-    expect(component.selectedHero).not.toBeDefined();
     expect(compiled.querySelector('#details')).toBe(null);
   });
 

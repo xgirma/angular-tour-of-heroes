@@ -2892,3 +2892,13 @@ export class HeroesComponent implements OnInit {
 ```
 
 Removing dead code, shown above makes test to fail? 
+
+```text
+NullInjectorError: StaticInjectorError(DynamicTestModule)[HeroDetailComponent -> ActivatedRoute]: 
+  StaticInjectorError(Platform: core)[HeroDetailComponent -> ActivatedRoute]: 
+    NullInjectorError: No provider for ActivatedRoute!
+```
+
+Solution: `RouterTestingModule`
+
+Continued [here](https://github.com/xgirma/Testing-Angular-Tour-Of-Heroes)

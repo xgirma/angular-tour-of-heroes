@@ -2150,7 +2150,7 @@ const heroServiceStub = {
   }
 };
 
-describe('data: hero.service',  () => {
+describe('HeroesComponent: data: hero.service',  () => {
   let fixture: ComponentFixture<HeroesComponent>;
 
   beforeEach(async(() => {
@@ -2533,5 +2533,65 @@ describe('AppComponent', () => {
 +    expect(compiled.querySelector('a').getAttribute('href'))
 +      .toEqual('/heroes');
 +  });
+});
+```
+
+## DashboardComponent(0.1)
+Let us have more than one view. For details see [here](https://angular.io/tutorial/toh-pt5#add-a-dashboard-view)
+
+### :pig: view: dashboard.component.html
+```html
+<h3>Top Heroes</h3>
+<div class="grid grid-pad">
+  <a *ngFor="let hero of heroes" class="col-1-4">
+    <div class="module hero">
+      <h4>{{hero.name}}</h4>
+    </div>
+  </a>
+</div>
+```
+
+### :cat: unit test: dashboard.component.spec.ts
+```typescript
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { DashboardComponent } from './dashboard.component';
+import { HEROES } from '../mock-heroes';
+import { By } from '@angular/platform-browser';
+
+describe('DashboardComponent', () => {
+  let component: DashboardComponent;
+  let fixture: ComponentFixture<DashboardComponent>;
+  let compiled: any;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ DashboardComponent ]
+    })
+    .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(DashboardComponent);
+    component = fixture.componentInstance;
+    component.heroes = HEROES.slice(1, 5);
+    fixture.detectChanges();
+    compiled = fixture.debugElement.nativeElement;
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('should have heroes', () => {
+    expect(component.heroes).toBeDefined();
+  });
+
+  it('should have a list of heroes', async () => {
+    const heroes = fixture.debugElement.queryAll(By.css(`.module.hero > h4`));
+    component.heroes.forEach( (hero, index) => {
+      expect(heroes[index].nativeElement.textContent).toContain(hero.name);
+    });
+  });
 });
 ```

@@ -66,7 +66,7 @@ const heroServiceStub = {
   }
 };
 
-describe('data: hero.service',  () => {
+describe('HeroesComponent: data: hero.service',  () => {
   let fixture: ComponentFixture<HeroesComponent>;
 
   beforeEach(async(() => {

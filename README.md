@@ -2685,3 +2685,144 @@ describe('AppComponent', () => {
   });
 });
 ```
+
+Adding `routerLink` to Dashboard component give the below error. 
+
+### :pig: view: dashboard.component.html
+```diff
+<h3>Top Heroes</h3>
+<div class="grid grid-pad">
+-  <a *ngFor="let hero of heroes" class="col-1-4">
++  <a *ngFor="let hero of heroes" class="col-1-4" routerLink="/detail/{{hero.id}}">
+    <div class="module hero">
+      <h4>{{hero.name}}</h4>
+    </div>
+  </a>
+</div>
+```
+
+### :cat: unit test : error: dashboard.component.spec.ts
+```text
+Failed: Template parse errors:
+Can't bind to 'routerLink' since it isn't a known property of 'a'. ("<h3>Top Heroes</h3>
+<div class="grid grid-pad">
+  <a *ngFor="let hero of heroes" class="col-1-4" [ERROR ->]routerLink="/detail/{{hero.id}}">
+    <div class="module hero">
+      <h4>{{hero.name}}</h4>
+"): ng:///DynamicTestModule/DashboardComponent.html@2:49
+```
+
+To fix add `RouterTestingModule` 
+
+### :cat: unit test : dashboard.component.spec.ts
+```diff
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
++ import { RouterTestingModule } from '@angular/router/testing';
+
+import { DashboardComponent } from './dashboard.component';
+import { HEROES } from '../mock-heroes';
+import { By } from '@angular/platform-browser';
+
+describe('DashboardComponent', () => {
+  let component: DashboardComponent;
+  let fixture: ComponentFixture<DashboardComponent>;
+  let compiled: any;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
++      imports: [
++        RouterTestingModule
++      ],
+      declarations: [
+        DashboardComponent
+      ]
+    })
+    .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(DashboardComponent);
+    component = fixture.componentInstance;
+    component.heroes = HEROES.slice(1, 5);
+    fixture.detectChanges();
+    compiled = fixture.debugElement.nativeElement;
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('should have heroes', () => {
+    expect(component.heroes).toBeDefined();
+  });
+
+  it('should have a list of heroes', async () => {
+    const heroes = fixture.debugElement.queryAll(By.css(`.module.hero > h4`));
+    component.heroes.forEach( (hero, index) => {
+      expect(heroes[index].nativeElement.textContent).toContain(hero.name);
+    });
+  });
+});
+```
+
+We add a test for the `routerLink="/detail/{{hero.id}}"` as shown below.
+
+### :cat: unit test: dashboard.component.spec.ts
+```diff
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+
+import { DashboardComponent } from './dashboard.component';
+import { HEROES } from '../mock-heroes';
+import { By } from '@angular/platform-browser';
+
+describe('DashboardComponent', () => {
+  let component: DashboardComponent;
+  let fixture: ComponentFixture<DashboardComponent>;
+  let compiled: any;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule
+      ],
+      declarations: [
+        DashboardComponent
+      ]
+    })
+    .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(DashboardComponent);
+    component = fixture.componentInstance;
+    component.heroes = HEROES.slice(1, 5);
+    fixture.detectChanges();
+    compiled = fixture.debugElement.nativeElement;
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('should have heroes', () => {
+    expect(component.heroes).toBeDefined();
+  });
+
+  it('should have a list of heroes', async () => {
+    const heroes = fixture.debugElement.queryAll(By.css(`.module.hero > h4`));
+    component.heroes.forEach( (hero, index) => {
+      expect(heroes[index].nativeElement.textContent).toContain(hero.name);
+    });
+  });
+
++  it('should have a link of heroes', async () => {
++    const heroes = fixture.debugElement.queryAll(By.css(`a`));
++    component.heroes.forEach( (hero, index) => {
++      expect(heroes[index].nativeElement.getAttribute('href'))
++        .toContain(`/detail/${hero.id}`);
++    });
++  });
+});
+```
+

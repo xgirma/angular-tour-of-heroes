@@ -15,7 +15,7 @@ jobs:
         node-version: '12.x'
     - name: npm install, lint, unit test and e2e tests
       run: |
-        npm ci
+        npm install
         npm install -g @angular/cli
       env:
         CI: true

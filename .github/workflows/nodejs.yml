@@ -1,4 +1,4 @@
-name: Node CI
+name: NodeCI
 
 on: [push]
 
@@ -7,24 +7,22 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [10.x, 12.x]
-
     steps:
     - uses: actions/checkout@v1
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: '12.x'
     - name: npm install, lint, unit test and e2e tests
       run: |
+        npm ci
         npm install -g @angular/cli
-        npm install
-        npm run lint
-        npm run start &
-        npm test -- --watch false --browsers ChromeHeadless
-        npm run e2e:update-webdriver
-        npm run e2e:travis
       env:
         CI: true
+    - name: testing lint, build, unit test
+      run: |
+        npm run lint
+        npm run build
+        npm run test -- --configuration=ci --no-watch --no-progress --code-coverage
+        npm run webdriver-update
+        npm run e2e -- --configuration=ci

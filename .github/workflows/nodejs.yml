@@ -19,7 +19,7 @@ jobs:
         npm install -g @angular/cli
       env:
         CI: true
-    - name: testing lint, build, unit test
+    - name: lint, build, unit & e2e test
       run: |
         npm run lint
         npm run build
